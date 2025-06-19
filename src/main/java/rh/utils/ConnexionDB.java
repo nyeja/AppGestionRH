@@ -1,4 +1,4 @@
-package com.rhplus.rhplus.utils;
+package rh.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ public class ConnexionDB {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 conn = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@localhost:1521:XE", "rh", "rh123");
+                        "jdbc:oracle:thin:@localhost:1521:XE", "abraham", "abraham");
             } catch (Exception e) {
                 e.printStackTrace();
             }

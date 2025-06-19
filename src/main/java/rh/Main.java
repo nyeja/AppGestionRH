@@ -1,4 +1,4 @@
-package com.rhplus.rhplus;
+package rh;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,6 +13,7 @@ public class Main extends Application {
         Scene scene = new Scene(label, 400, 200);
         stage.setScene(scene);
         stage.setTitle("RHPlus - Application RH");
+
         stage.show();
     }
 
