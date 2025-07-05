@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #E2E7E9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.dashboardController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="6.0" layoutY="4.0" prefHeight="591.0" prefWidth="206.0" style="-fx-background-color: #153793;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="994.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="142.0" prefWidth="198.0">
+               <children>
+                  <ImageView fitHeight="98.0" fitWidth="155.0" layoutX="22.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../logo.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="362.0" prefWidth="206.0">
+               <children>
+                  <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="220.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion DPE" textFill="WHITE">
+                    <items>
+                      <MenuItem fx:id="itemPoste" mnemonicParsing="false" onAction="#infoPoste" text="Poste" />
+                      <MenuItem fx:id="itemEmployer" mnemonicParsing="false" onAction="#infoEmployer" text="Employer" />
+                        <MenuItem fx:id="itemDepartement" mnemonicParsing="false" onAction="#loadDepartementView" text="Département" />
+                    </items>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MenuButton>
+                  <Button alignment="CENTER" layoutX="46.0" layoutY="112.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion de congé" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="47.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: none;" text="Gestion d'absence" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="40.0" layoutY="185.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="153.0" style="-fx-background-color: none;" text="Gestion de retard" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="home" alignment="CENTER" layoutX="54.0" layoutY="78.0" mnemonicParsing="false" onAction="#afficherAcceuil" style="-fx-background-color: none;" text="Acceuil" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="22.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../page-daccueil.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="22.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../jour-de-conge.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="20.0" fitWidth="23.0" layoutX="25.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../absence.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="26.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../en-retard.png" />
+                     </image>
+                  </ImageView>
+                  <Pane layoutX="16.0" layoutY="7.0" prefHeight="4.0" prefWidth="171.0" style="-fx-background-color: white;" />
+                  <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="27.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../ressources-humaines.png" />
+                     </image>
+                  </ImageView>
+                  <Pane layoutX="12.0" layoutY="322.0" prefHeight="4.0" prefWidth="171.0" style="-fx-background-color: white;" />
+               </children>
+            </Pane>
+            <Pane prefHeight="112.0" prefWidth="206.0">
+               <children>
+                  <ImageView fitHeight="48.0" fitWidth="42.0" layoutX="23.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../deconecter.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="84.0" layoutY="29.0" prefHeight="42.0" prefWidth="85.0" text="Logout" textAlignment="CENTER">
+                     <font>
+                        <Font name="Dubai Medium" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+      <StackPane fx:id="stackPaneHome" layoutX="205.0" layoutY="1.0" prefHeight="610.0" prefWidth="994.0" style="-fx-background-color: #EAE2B7;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="205.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <Label text="Bienvenu" textFill="#1e0000">
+               <font>
+                  <Font size="156.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+      <StackPane fx:id="stackPaneDepartement" layoutX="209.0" layoutY="1.0" prefHeight="610.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <StackPane fx:id="mainContentDepartement" prefHeight="289.0" prefWidth="976.0" />
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

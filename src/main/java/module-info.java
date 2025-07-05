@@ -10,7 +10,10 @@ module rh {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires java.desktop;
 
-    opens rh to javafx.fxml;
+    opens rh.model.departement to java.base;
+    opens rh.controller to javafx.fxml;
+    exports rh.model.departement;
     exports rh;
 }
