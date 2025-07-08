@@ -17,26 +17,23 @@ import rh.utils.ConnexionDB;
 import javax.swing.*;
 
 public class departementController {
-
+    // variable de connection au base de donné
     private static Connection conn = ConnexionDB.getConnection();
-
+    // variable utilisé pour le formulaire du departement
     @FXML
     private TextField tfNom;
-
     @FXML
     private TextField tfCode;
-
     @FXML
     private  ChoiceBox<String> cbResponsable;
-
     @FXML
     private TextField tfLocalisation;
-
     @FXML
     private TextField tfDescription;
-
     @FXML
     private TextField tfNombreEmployer;
+    @FXML
+    private TextField tfRechercher;
 
     @FXML
     private Button btnValider;
@@ -46,13 +43,13 @@ public class departementController {
 
     @FXML
     private Label labelMessage;
-
+    // Variable pour la model du tableaux
     @FXML
     private TableView<tableauDepartement> tableDepartement;
 
     @FXML
     private String id_dpm;
-
+    // variable utilisé pour les collones du tableaux
     @FXML
     private TableColumn<tableauDepartement,String> colId;
     @FXML
@@ -70,7 +67,8 @@ public class departementController {
 
     @FXML
     private ListView listViewDepartement;
-
+    // l'observableList permet de stocker les donné avant de l'ajouter dans une liste, tableau ou autre
+    // il permet de synchroniser facilement l’interface utilisateur avec les données
     @FXML
     private ObservableList<String> listDepartement = FXCollections.observableArrayList();
 
@@ -83,8 +81,11 @@ public class departementController {
                 "Finance",
                 "Marketing"
         );
+        tfRechercher.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherDepartement(newValue);
+        });
 
-       try {
+        try {
            // Liaison des colonnes aux propriétés de la classe tableauDepartement
            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
            colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -175,25 +176,27 @@ public class departementController {
 
     @FXML
     private void ajouterDepartement() {
-
+        // Stoks les données entrées dans les variables
         String nom = tfNom.getText();
         String code = tfCode.getText();
         String resposable = cbResponsable.getValue();
         String localisation = tfLocalisation.getText();
         String description = tfDescription.getText();
         String nbrEmployer = tfNombreEmployer.getText();
-
+        // commande sql pour l'ajout du département
         String sql = "insert into DEPARTEMENT (NOM,CODE,ID_RESPONSABLE,LOCALISATION,DESCRIPTION,NOMBRE_EMPLOYES) VALUES (?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Remplace les '?' dans la commande sql
             stmt.setString(1, nom);
             stmt.setString(2, code);
             stmt.setString(3, resposable);
             stmt.setString(4, localisation);
             stmt.setString(5, description);
             stmt.setInt(6, Integer.parseInt(nbrEmployer));
-
+            // execute l'ajout du département
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
+                // vider tous les champs
                 tfNom.setText("");
                 tfCode.setText("");
                 tfDescription.setText("");
@@ -216,6 +219,7 @@ public class departementController {
 
     @FXML
     private void preparModificationDepartement(){
+        // Selectionner les données dans le tableau
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
         if (selectedDepartement != null){
             // System.out.println("Voici l'élément selectionner "+ "Id : " + selectedDepartement.getId()+ "\nnom : " + selectedDepartement.getNom());
@@ -226,7 +230,7 @@ public class departementController {
             String localition = selectedDepartement.getLocalisation();
             String description = selectedDepartement.getDescription();
             String nombres = selectedDepartement.getNombreEmployes();
-            // completer les formulaire avec les données récuperer
+            // completer les formulaires avec les données récuperer
             tfNom.setText(nom);
             tfCode.setText(code);
             cbResponsable.setValue(responsable);
@@ -238,14 +242,14 @@ public class departementController {
 
     @FXML
     private void ValiderModification(){
-        // recuperation les valeur ajouter dans le champs de texte
+        // recuperation des valeurs ajoutées dans les champs de texte
         String nom = tfNom.getText();
         String code = tfCode.getText();
         String responsable = cbResponsable.getValue();
         String localition = tfLocalisation.getText();
         String description = tfDescription.getText();
         String nombres = tfNombreEmployer.getText();
-
+        // Commande sql pour la modification des données dans une base de donnée
         String sql_modification = "UPDATE departement SET nom = ?, code = ?,id_responsable = ?,localisation = ?,description = ?,nombre_employes = ? WHERE id_departement = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql_modification)){
             tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
@@ -320,5 +324,35 @@ public class departementController {
             }
         }
     }
+    private void rechercherDepartement(String motCle) {
+        // stocké les listes pour être bien syncronisé
+        ObservableList<tableauDepartement> listeFiltrée = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM departement WHERE nom LIKE ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + motCle + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Stocké les données récuperer dans des veriables
+                String id = rs.getString("ID_DEPARTEMENT");
+                String nom = rs.getString("NOM");
+                String code = rs.getString("CODE");
+                String id_responsable = rs.getString("ID_RESPONSABLE");
+                String localisation = rs.getString("LOCALISATION");
+                String description = rs.getString("DESCRIPTION");
+                String nombre_employes = rs.getString("NOMBRE_EMPLOYES");
+
+                tableauDepartement dept = new tableauDepartement(id, nom, code, id_responsable, localisation, description, nombre_employes);
+                listeFiltrée.add(dept);
+            }
+
+            tableDepartement.setItems(listeFiltrée);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
+

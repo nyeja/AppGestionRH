@@ -111,10 +111,6 @@
             </Label>
          </children>
       </StackPane>
-      <StackPane fx:id="stackPaneDepartement" layoutX="209.0" layoutY="1.0" prefHeight="610.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="1.0">
-         <children>
-            <StackPane fx:id="mainContentDepartement" prefHeight="289.0" prefWidth="976.0" />
-         </children>
-      </StackPane>
+      <StackPane fx:id="stackPaneDepartement" layoutX="264.0" layoutY="1.0" prefHeight="610.0" prefWidth="921.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="1.0" />
    </children>
 </AnchorPane>

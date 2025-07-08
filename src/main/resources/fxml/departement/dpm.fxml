@@ -6,57 +6,98 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.departementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.departementController">
    <children>
-      <VBox layoutX="-1.0" layoutY="35.0" prefHeight="508.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="-1.0" layoutY="76.0" prefHeight="508.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane prefHeight="520.0" prefWidth="976.0">
+            <Pane prefHeight="631.0" prefWidth="976.0">
                <children>
-                  <Label fx:id="lblMessage" layoutX="43.0" layoutY="321.0" text="Nom :" />
-                  <Label layoutX="43.0" layoutY="382.0" prefHeight="17.0" prefWidth="37.0" text="Code :" />
-                  <Label layoutX="40.0" layoutY="439.0" text="Responsable :" />
-                  <TextField fx:id="tfNom" layoutX="130.0" layoutY="317.0" prefHeight="28.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <TextField fx:id="tfCode" layoutX="131.0" layoutY="375.0" prefHeight="28.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <ChoiceBox fx:id="cbResponsable" layoutX="131.0" layoutY="436.0" prefHeight="16.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <Button fx:id="btnValider" layoutX="827.0" layoutY="317.0" mnemonicParsing="false" onAction="#ajouterDepartement" style="-fx-background-color: blue;" text="Ajouter" textFill="WHITE">
+                  <Label fx:id="lblMessage" layoutX="42.0" layoutY="438.0" text="Nom :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="42.0" layoutY="490.0" prefHeight="27.0" prefWidth="73.0" text="Code :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="42.0" layoutY="552.0" text="Responsable :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <TextField fx:id="tfNom" layoutX="133.0" layoutY="433.0" prefHeight="28.0" prefWidth="160.0" />
+                  <TextField fx:id="tfCode" layoutX="134.0" layoutY="490.0" prefHeight="28.0" prefWidth="160.0" />
+                  <ChoiceBox fx:id="cbResponsable" layoutX="135.0" layoutY="549.0" prefHeight="16.0" prefWidth="160.0" />
+                  <Button fx:id="btnValider" alignment="CENTER" layoutX="709.0" layoutY="433.0" mnemonicParsing="false" onAction="#ajouterDepartement" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: green;" text="Ajouter" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Label layoutX="354.0" layoutY="381.0" text="Localisation :" />
-                  <Label layoutX="353.0" layoutY="323.0" text="Description :" />
-                  <Label layoutX="355.0" layoutY="433.0" text="Nombre d'employer :" />
-                  <TextField fx:id="tfLocalisation" layoutX="480.0" layoutY="368.0" prefHeight="28.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <TextField fx:id="tfDescription" layoutX="478.0" layoutY="315.0" prefHeight="28.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <TextField fx:id="tfNombreEmployer" layoutX="481.0" layoutY="421.0" prefHeight="28.0" prefWidth="199.0" style="-fx-background-color: grey;" />
-                  <Label fx:id="labelMessage" layoutX="398.0" layoutY="462.0" text="Label" />
-                  <Button fx:id="btnModifier" layoutX="827.0" layoutY="373.0" mnemonicParsing="false" onAction="#preparModificationDepartement" style="-fx-background-color: green;" text="Modifier" textFill="WHITE">
+                  <Label layoutX="316.0" layoutY="493.0" text="Localisation :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="316.0" layoutY="435.0" text="Description :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="317.0" layoutY="551.0" text="Nombre d'employer :">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <TextField fx:id="tfLocalisation" layoutX="459.0" layoutY="487.0" prefHeight="28.0" prefWidth="199.0" />
+                  <TextField fx:id="tfDescription" layoutX="457.0" layoutY="430.0" prefHeight="28.0" prefWidth="199.0" />
+                  <TextField fx:id="tfNombreEmployer" layoutX="460.0" layoutY="545.0" prefHeight="28.0" prefWidth="199.0" />
+                  <Label fx:id="labelMessage" layoutX="250.0" layoutY="578.0" text="Label" />
+                  <Button fx:id="btnModifier" alignment="CENTER" layoutX="709.0" layoutY="485.0" mnemonicParsing="false" onAction="#preparModificationDepartement" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnSupprimer" layoutX="826.0" layoutY="425.0" mnemonicParsing="false" onAction="#supprimerDepartement" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
+                  <Button fx:id="btnSupprimer" alignment="CENTER" layoutX="708.0" layoutY="539.0" mnemonicParsing="false" onAction="#supprimerDepartement" prefHeight="21.0" prefWidth="90.0" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <TableView fx:id="tableDepartement" layoutX="28.0" layoutY="32.0" prefHeight="240.0" prefWidth="934.0">
+                  <TableView fx:id="tableDepartement" layoutX="9.0" layoutY="81.0" prefHeight="328.0" prefWidth="963.0">
                     <columns>
-                      <TableColumn fx:id="colId" prefWidth="100.0" text="Id" />
-                      <TableColumn fx:id="colNom" prefWidth="100.0" text="Nom" />
-                        <TableColumn fx:id="colCode" prefWidth="100.0" text="Code" />
-                        <TableColumn fx:id="colResponsable" prefWidth="100.0" text="Responsable" />
-                        <TableColumn fx:id="colLocalisation" prefWidth="100.0" text="Localisation" />
+                      <TableColumn fx:id="colId" prefWidth="120.0" text="Id" />
+                      <TableColumn fx:id="colNom" prefWidth="150.0" text="Nom" />
+                        <TableColumn fx:id="colCode" prefWidth="150.0" text="Code" />
+                        <TableColumn fx:id="colResponsable" prefWidth="120.0" text="Responsable" />
+                        <TableColumn fx:id="colLocalisation" prefWidth="120.0" text="Localisation" />
                         <TableColumn fx:id="colDescription" prefWidth="150.0" text="Desciption" />
                         <TableColumn fx:id="colNombreEmployer" prefWidth="150.0" text="Nombre d'employers" />
                     </columns>
                   </TableView>
-                  <Button fx:id="modifValider" layoutX="837.0" layoutY="462.0" mnemonicParsing="false" onAction="#ValiderModification" style="-fx-background-color: yelow;" text="Valider" />
+                  <Button fx:id="modifValider" layoutX="854.0" layoutY="431.0" mnemonicParsing="false" onAction="#ValiderModification" style="-fx-background-color: green;" text="Valider" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Button>
+                  <Button layoutX="920.0" layoutY="34.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="28.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../../../../interface.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <TextField fx:id="tfRechercher" layoutX="483.0" layoutY="35.0" prefHeight="36.0" prefWidth="415.0" />
+                  <ImageView fitHeight="93.0" fitWidth="98.0" layoutX="841.0" layoutY="478.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../home%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </children>

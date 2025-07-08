@@ -10,6 +10,7 @@ import java.io.IOException;
 
 
 public class dashboardController {
+
     @FXML private StackPane mainContentDepartement;
 
     @FXML private MenuItem itemPoste;
@@ -43,21 +44,13 @@ public class dashboardController {
             System.out.println("voici l'erreur : " + e);
         }
     }
-    @FXML
-    private  void infoDepartement(){
-        try {
-            stackPaneDepartement.setVisible(true);
-        }catch (Exception e){
-            System.out.println("voici l'erreur : " + e);
-        }
-    }
 
     @FXML
     private void loadDepartementView() throws IOException {
         // Charge le fichier FXML du module "Département"
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/departement/dpm.fxml"));
         // Affiche ce module dans le StackPane principal
-        mainContentDepartement.getChildren().setAll(node);
+        stackPaneDepartement.getChildren().setAll(node);
 
     }
 
