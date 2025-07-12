@@ -42,6 +42,9 @@ public class departementController {
     private Button btnSupprimer;
 
     @FXML
+    private Button modifValider;
+
+    @FXML
     private Label labelMessage;
     // Variable pour la model du tableaux
     @FXML
@@ -81,10 +84,12 @@ public class departementController {
                 "Finance",
                 "Marketing"
         );
+        // recherche automatique
         tfRechercher.textProperty().addListener((observable, oldValue, newValue) -> {
             rechercherDepartement(newValue);
         });
-
+        // Mettre le boutton valider invisible
+        modifValider.setVisible(false);
         try {
            // Liaison des colonnes aux propriétés de la classe tableauDepartement
            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -182,7 +187,13 @@ public class departementController {
         String resposable = cbResponsable.getValue();
         String localisation = tfLocalisation.getText();
         String description = tfDescription.getText();
-        String nbrEmployer = tfNombreEmployer.getText();
+        int nbrEmployer;
+        if (tfNombreEmployer.getText() != ""){
+            nbrEmployer = Integer.parseInt(tfNombreEmployer.getText());
+        }else {
+            nbrEmployer = 0 ;
+        }
+
         // commande sql pour l'ajout du département
         String sql = "insert into DEPARTEMENT (NOM,CODE,ID_RESPONSABLE,LOCALISATION,DESCRIPTION,NOMBRE_EMPLOYES) VALUES (?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -192,10 +203,11 @@ public class departementController {
             stmt.setString(3, resposable);
             stmt.setString(4, localisation);
             stmt.setString(5, description);
-            stmt.setInt(6, Integer.parseInt(nbrEmployer));
+            stmt.setInt(6, nbrEmployer);
             // execute l'ajout du département
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
+                tableDepartement.setItems(chargerProduits());
                 // vider tous les champs
                 tfNom.setText("");
                 tfCode.setText("");
@@ -219,6 +231,7 @@ public class departementController {
 
     @FXML
     private void preparModificationDepartement(){
+        modifValider.setVisible(true);
         // Selectionner les données dans le tableau
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
         if (selectedDepartement != null){
@@ -265,6 +278,8 @@ public class departementController {
             // execution de la modification
             int ligneModifier = stmt.executeUpdate();
             if (ligneModifier > 0){
+                modifValider.setVisible(false);
+                tableDepartement.setItems(chargerProduits());
                 tfNom.setText("");
                 tfCode.setText("");
                 tfDescription.setText("");
@@ -307,6 +322,7 @@ public class departementController {
                     int ligneSupprimee = stmt.executeUpdate();
 
                     if (ligneSupprimee > 0) {
+                        tableDepartement.setItems(chargerProduits());
                         // Message de succès
                         labelMessage.setText("Suppression du département " + id_dpm + " réussie.");
                     } else {
