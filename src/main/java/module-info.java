@@ -11,6 +11,11 @@ module com.rhplus.rhplus {
     requires eu.hansolo.tilesfx;
     requires java.sql;
 
-    opens com.rhplus.rhplus to javafx.fxml;
-    exports com.rhplus.rhplus;
+
+    exports rh;
+    opens rh to javafx.fxml;
+    opens rh.controller to javafx.fxml;
+    opens rh.model to javafx.base, javafx.fxml;
+    exports rh.controller;
+
 }

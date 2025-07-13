@@ -95,7 +95,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Pour la connexion dans Oracle        -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>10.2.0.1.0</version>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
