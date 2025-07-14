@@ -98,9 +98,10 @@
         <!-- Pour la connexion dans Oracle        -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>10.2.0.1.0</version>
+            <artifactId>ojdbc8</artifactId>
+            <version>21.5.0.0</version>
         </dependency>
+
     </dependencies>
 
 

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnexionDB {
+//     Class.forName("oracle.jdbc.driver.OracleDriver");
     private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USER = "rh";
     private static final String PASSWORD = "rh123";

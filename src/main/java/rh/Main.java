@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL fxmlLocation = getClass().getResource("/fxml/employee-management.fxml");
+        URL fxmlLocation = getClass().getResource("/fxml/Employe.fxml");
         if (fxmlLocation == null) {
             throw new IllegalStateException("Le fichier FXML est introuvable !");
         }
@@ -20,10 +20,10 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         // Charger le CSS
-        URL cssLocation = getClass().getResource("/employee-styles.css");
-        if (cssLocation != null) {
-            scene.getStylesheets().add(cssLocation.toExternalForm());
-        }
+//        URL cssLocation = getClass().getResource("/employee-styles.css");
+//        if (cssLocation != null) {
+//            scene.getStylesheets().add(cssLocation.toExternalForm());
+//        }
 
         stage.setScene(scene);
         stage.setTitle("RHPlus - Gestion des employés");
