@@ -33,7 +33,7 @@
                      </font></Label>
                   <TextField fx:id="tfNom" layoutX="133.0" layoutY="433.0" prefHeight="28.0" prefWidth="160.0" promptText="nom" />
                   <TextField fx:id="tfCode" layoutX="134.0" layoutY="490.0" prefHeight="28.0" prefWidth="160.0" promptText="code - RH , IT , ..." />
-                  <ChoiceBox fx:id="cbResponsable" layoutX="135.0" layoutY="549.0" prefHeight="16.0" prefWidth="160.0" />
+                  <ChoiceBox fx:id="cbResponsable" disable="true" layoutX="135.0" layoutY="549.0" prefHeight="16.0" prefWidth="160.0" />
                   <Button fx:id="btnValider" alignment="CENTER" layoutX="709.0" layoutY="433.0" mnemonicParsing="false" onAction="#ajouterDepartement" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: green;" text="Ajouter" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
@@ -53,8 +53,7 @@
                      </font></Label>
                   <TextField fx:id="tfLocalisation" layoutX="459.0" layoutY="487.0" prefHeight="28.0" prefWidth="199.0" promptText="Localisation ...." />
                   <TextField fx:id="tfDescription" layoutX="457.0" layoutY="430.0" prefHeight="28.0" prefWidth="199.0" promptText="Descrption ..." />
-                  <TextField fx:id="tfNombreEmployer" layoutX="460.0" layoutY="545.0" prefHeight="28.0" prefWidth="199.0" promptText="0" />
-                  <Label fx:id="labelMessage" layoutX="250.0" layoutY="578.0" text="Label" />
+                  <TextField fx:id="tfNombreEmployer" disable="true" layoutX="460.0" layoutY="545.0" prefHeight="28.0" prefWidth="199.0" promptText="0" />
                   <Button fx:id="btnModifier" alignment="CENTER" layoutX="709.0" layoutY="485.0" mnemonicParsing="false" onAction="#preparModificationDepartement" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
@@ -98,6 +97,11 @@
                         <Image url="@../../../../../../../../../../../home%20(1).png" />
                      </image>
                   </ImageView>
+                  <Label layoutX="33.0" layoutY="36.0" prefHeight="36.0" prefWidth="377.0" text="GESTION DE DEPARTEMENT">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </children>

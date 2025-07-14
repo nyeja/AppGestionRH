@@ -44,8 +44,6 @@ public class departementController {
     @FXML
     private Button modifValider;
 
-    @FXML
-    private Label labelMessage;
     // Variable pour la model du tableaux
     @FXML
     private TableView<tableauDepartement> tableDepartement;
@@ -78,6 +76,7 @@ public class departementController {
     @FXML
     public void initialize() {
         // Ajoute des options à la ChoiceBox
+        //String sql = "select nom from de"
         cbResponsable.getItems().addAll(
                 "RH",
                 "IT",
@@ -107,39 +106,7 @@ public class departementController {
            System.out.println("voici l'erreur" + e);
        }
     }
-/* aaffichage avec listview
-    @FXML
-    public void AfficherDepartement(){
-        String sqlAfficher = "select * from departement";
 
-
-        try (PreparedStatement stmt = conn.prepareStatement(sqlAfficher)) {
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                String id =   rs.getString("id_departement");
-                String nom =   rs.getString("code");
-                String id_responsable =   rs.getString("id_responsable");
-                String localisation =   rs.getString("LOCALISATION");
-                String description =   rs.getString("DESCRIPTION");
-                String nombre_employes =   rs.getString("NOMBRE_EMPLOYES");
-                for (int i= 1; i < rs.getRow(); i++){
-
-                    listDepartement.add("Voici le " + i + " département " + "\nid : " + id);
-                    listDepartement.add("Département de " + nom);
-                    listDepartement.add("Mr/Mme " + id_responsable);
-                    listDepartement.add("Localisé au " + localisation);
-                    listDepartement.add("description : " + description);
-                    listDepartement.add("Effectif : " + nombre_employes);
-                    listViewDepartement.setItems(listDepartement);
-                }
-
-            }
-
-        } catch (Exception e) {
-            labelMessage.setText("Erreur : Echec de suppression" + e.getMessage());
-            e.printStackTrace();
-        }
-    }*/
     // Méthode statique qui charge les départements depuis la base et les retourne sous forme de liste observable
     private static ObservableList<tableauDepartement> chargerProduits() {
         // Liste observable qui contiendra les départements récupérés
@@ -187,15 +154,8 @@ public class departementController {
         String resposable = cbResponsable.getValue();
         String localisation = tfLocalisation.getText();
         String description = tfDescription.getText();
-        int nbrEmployer;
-        if (tfNombreEmployer.getText() != ""){
-            nbrEmployer = Integer.parseInt(tfNombreEmployer.getText());
-        }else {
-            nbrEmployer = 0 ;
-        }
-
         // commande sql pour l'ajout du département
-        String sql = "insert into DEPARTEMENT (NOM,CODE,ID_RESPONSABLE,LOCALISATION,DESCRIPTION,NOMBRE_EMPLOYES) VALUES (?,?,?,?,?,?)";
+        String sql = "insert into DEPARTEMENT (NOM,CODE,ID_RESPONSABLE,LOCALISATION,DESCRIPTION) VALUES (?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             // Remplace les '?' dans la commande sql
             stmt.setString(1, nom);
@@ -203,7 +163,6 @@ public class departementController {
             stmt.setString(3, resposable);
             stmt.setString(4, localisation);
             stmt.setString(5, description);
-            stmt.setInt(6, nbrEmployer);
             // execute l'ajout du département
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
@@ -215,22 +174,24 @@ public class departementController {
                 tfLocalisation.setText("");
                 tfNombreEmployer.setText("");
                 cbResponsable.setValue("");
-                labelMessage.setText("Département ajouté avec succès !");
+                System.out.println("Département ajouté avec succès !");
             } else {
-                labelMessage.setText("Échec de l'ajout du département.");
+                System.out.println("Échec de l'ajout du département.");
             }
 
         } catch (NumberFormatException e) {
-            labelMessage.setText("Erreur : nombre d'employés invalide.");
+            System.out.println("Erreur : nombre d'employés invalide." + e);
             e.printStackTrace();
         } catch (Exception e) {
-            labelMessage.setText("Erreur lors de l'ajout : " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout : " + e);
+
         }
     }
 
     @FXML
     private void preparModificationDepartement(){
+        cbResponsable.setDisable(false);
+        tfNombreEmployer.setDisable(false);
         modifValider.setVisible(true);
         // Selectionner les données dans le tableau
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
@@ -286,9 +247,9 @@ public class departementController {
                 tfLocalisation.setText("");
                 tfNombreEmployer.setText("");
                 cbResponsable.setValue("");
-                labelMessage.setText("Modification du département " + idDep + " réussie.");
+                System.out.println("Modification du département " + idDep + " réussie.");
             }else {
-                labelMessage.setText("Erreur lors de la modification");
+                System.out.println("Erreur lors de la modification");
             }
         }catch (Exception e){
             System.out.println("Voici l'erreur " + e);
@@ -324,10 +285,10 @@ public class departementController {
                     if (ligneSupprimee > 0) {
                         tableDepartement.setItems(chargerProduits());
                         // Message de succès
-                        labelMessage.setText("Suppression du département " + id_dpm + " réussie.");
+                        System.out.println("Suppression du département " + id_dpm + " réussie.");
                     } else {
                         // Aucun département supprimé (ID inexistant ?)
-                        labelMessage.setText("Aucune suppression effectuée. ID introuvable ?");
+                        System.out.println("Aucune suppression effectuée. ID introuvable ?");
                     }
                 }else {
                     System.out.println("Id departement introuvable");
@@ -335,7 +296,7 @@ public class departementController {
 
             } catch (Exception e) {
                 // Affichage de l'erreur en cas de problème SQL
-                labelMessage.setText("Erreur : " + e.getMessage());
+                System.out.println("Erreur : " + e.getMessage());
                 System.out.println("Voici l'erreur : " + e.getMessage());
             }
         }
