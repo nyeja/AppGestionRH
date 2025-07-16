@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -33,7 +34,7 @@
                      </font></Label>
                   <TextField fx:id="tfNom" layoutX="133.0" layoutY="433.0" prefHeight="28.0" prefWidth="160.0" promptText="nom" />
                   <TextField fx:id="tfCode" layoutX="134.0" layoutY="490.0" prefHeight="28.0" prefWidth="160.0" promptText="code - RH , IT , ..." />
-                  <ChoiceBox fx:id="cbResponsable" disable="true" layoutX="135.0" layoutY="549.0" prefHeight="16.0" prefWidth="160.0" />
+                  <ChoiceBox layoutX="134.0" layoutY="580.0" prefHeight="16.0" prefWidth="160.0" />
                   <Button fx:id="btnValider" alignment="CENTER" layoutX="709.0" layoutY="433.0" mnemonicParsing="false" onAction="#ajouterDepartement" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: green;" text="Ajouter" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
@@ -102,6 +103,7 @@
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
+                  <ComboBox fx:id="cbResponsable" layoutX="134.0" layoutY="547.0" prefWidth="150.0" />
                </children>
             </Pane>
          </children>

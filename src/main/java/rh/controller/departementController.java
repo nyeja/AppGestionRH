@@ -25,7 +25,7 @@ public class departementController {
     @FXML
     private TextField tfCode;
     @FXML
-    private  ChoiceBox<String> cbResponsable;
+    private  ComboBox<String> cbResponsable;
     @FXML
     private TextField tfLocalisation;
     @FXML
@@ -76,13 +76,23 @@ public class departementController {
     @FXML
     public void initialize() {
         // Ajoute des options à la ChoiceBox
-        //String sql = "select nom from de"
-        cbResponsable.getItems().addAll(
-                "RH",
-                "IT",
-                "Finance",
-                "Marketing"
-        );
+       String sql = "SELECT nom FROM poste";
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            cbResponsable.getItems().clear();
+            while (rs.next()) {
+                String nom = rs.getString("nom"); // Récupère le nom depuis la colonne
+                System.out.println("Nom trouvé : " + nom);
+                cbResponsable.getItems().add(nom); // Ajoute le nom dans le ComboBox
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la récupération des noms d'employés : " + e.getMessage());
+        }
+    /*     cbResponsable.getItems().addAll(
+                "haendel",
+                "abraham"
+        );*/
         // recherche automatique
         tfRechercher.textProperty().addListener((observable, oldValue, newValue) -> {
             rechercherDepartement(newValue);
@@ -148,54 +158,72 @@ public class departementController {
 
     @FXML
     private void ajouterDepartement() {
-        // Stoks les données entrées dans les variables
+        // Récupère les données saisies par l'utilisateur dans les champs du formulaire
         String nom = tfNom.getText();
         String code = tfCode.getText();
-        String resposable = cbResponsable.getValue();
+        String resposable = cbResponsable.getValue(); // Ce champ doit contenir l'ID ou le nom du responsable
         String localisation = tfLocalisation.getText();
         String description = tfDescription.getText();
-        // commande sql pour l'ajout du département
-        String sql = "insert into DEPARTEMENT (NOM,CODE,ID_RESPONSABLE,LOCALISATION,DESCRIPTION) VALUES (?,?,?,?,?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Remplace les '?' dans la commande sql
-            stmt.setString(1, nom);
-            stmt.setString(2, code);
-            stmt.setString(3, resposable);
-            stmt.setString(4, localisation);
-            stmt.setString(5, description);
-            // execute l'ajout du département
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                tableDepartement.setItems(chargerProduits());
-                // vider tous les champs
-                tfNom.setText("");
-                tfCode.setText("");
-                tfDescription.setText("");
-                tfLocalisation.setText("");
-                tfNombreEmployer.setText("");
-                cbResponsable.setValue("");
-                System.out.println("Département ajouté avec succès !");
-            } else {
-                System.out.println("Échec de l'ajout du département.");
+
+        // Vérifie si un des champs obligatoires est vide
+        if (nom.isEmpty() || code.isEmpty() || localisation.isEmpty() || description.isEmpty() || resposable == null) {
+            // Affiche un message d'erreur si un champ est vide
+            JOptionPane.showConfirmDialog(
+                    null,
+                    "Veuillez compléter tous les champs", // Message
+                    "Champs manquants", // Titre
+                    JOptionPane.CLOSED_OPTION // Bouton de fermeture
+            );
+        } else {
+            // Commande SQL pour insérer un nouveau département dans la base de données
+            String sql = "INSERT INTO DEPARTEMENT (NOM, CODE, ID_RESPONSABLE, LOCALISATION, DESCRIPTION) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                // Remplace les ? par les vraies valeurs saisies
+                stmt.setString(1, nom);          // Nom du département
+                stmt.setString(2, code);         // Code du département
+                stmt.setString(3, resposable);   // ID du responsable (à adapter si nécessaire)
+                stmt.setString(4, localisation); // Localisation du département
+                stmt.setString(5, description);  // Description du département
+
+                // Exécute la requête d'insertion
+                int rowsInserted = stmt.executeUpdate();
+
+                // Vérifie si l'insertion a réussi
+                if (rowsInserted > 0) {
+                    // Recharge les données dans le tableau des départements
+                    tableDepartement.setItems(chargerProduits());
+
+                    // Vide les champs du formulaire après l'ajout
+                    tfNom.clear();
+                    tfCode.clear();
+                    tfDescription.clear();
+                    tfLocalisation.clear();
+                    tfNombreEmployer.clear(); // Champ optionnel, à supprimer s'il n'est pas utilisé
+                    cbResponsable.setValue(null); // Réinitialise le choix du responsable
+
+                    System.out.println("Département ajouté avec succès !");
+                } else {
+                    System.out.println("Échec de l'ajout du département.");
+                }
+
+            } catch (NumberFormatException e) {
+                // Gestion d'erreur si un champ numérique contient une mauvaise valeur
+                System.out.println("Erreur : nombre d'employés invalide." + e);
+            } catch (Exception e) {
+                // Affiche les erreurs générales de la base de données
+                System.out.println("Erreur lors de l'ajout : " + e);
             }
-
-        } catch (NumberFormatException e) {
-            System.out.println("Erreur : nombre d'employés invalide." + e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Erreur lors de l'ajout : " + e);
-
         }
     }
 
+
     @FXML
     private void preparModificationDepartement(){
-        cbResponsable.setDisable(false);
-        tfNombreEmployer.setDisable(false);
-        modifValider.setVisible(true);
         // Selectionner les données dans le tableau
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
         if (selectedDepartement != null){
+            tfNombreEmployer.setDisable(false);
+            modifValider.setVisible(true);
             // System.out.println("Voici l'élément selectionner "+ "Id : " + selectedDepartement.getId()+ "\nnom : " + selectedDepartement.getNom());
             // recupération des données dans le tableview
             String nom = selectedDepartement.getNom();
@@ -211,6 +239,13 @@ public class departementController {
             tfLocalisation.setText(localition);
             tfDescription.setText(description);
             tfNombreEmployer.setText(nombres);
+        }else{
+            JOptionPane.showConfirmDialog(
+                    null,
+                    "Veuillez selectionez l'un des éléments dans le tableau",
+                    "OK",
+                    JOptionPane.CLOSED_OPTION
+            );
         }
     }
 
@@ -258,47 +293,56 @@ public class departementController {
 
     @FXML
     public void supprimerDepartement(ActionEvent actionEvent) {
-        // Boîte de dialogue de confirmation
-        int confirmer = JOptionPane.showConfirmDialog(
-                null,
-                "Voulez-vous vraiment supprimer ce département ?",
-                "Confirmation",
-                JOptionPane.YES_NO_OPTION);
+        // ajout d'un ecouteur ou listener (sert à réagir automatiquement à un évènement ou à un changement dans un intèrface utilisateur
+        tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
+        if (selectedDepartement != null){
+            // Boîte de dialogue de confirmation
+            int confirmer = JOptionPane.showConfirmDialog(
+                    null,
+                    "Voulez-vous vraiment supprimer ce département ?",
+                    "Confirmation",
+                    JOptionPane.YES_NO_OPTION);
 
-        if (confirmer == JOptionPane.YES_OPTION) {
+            if (confirmer == JOptionPane.YES_OPTION) {
 
-            // Requête SQL pour supprimer un département par son ID
-            String sql_delete = "DELETE FROM departement WHERE id_departement = ?";
-            // Bloc try-with-resources pour gérer automatiquement la fermeture du PreparedStatement
-            try (PreparedStatement stmt = conn.prepareStatement(sql_delete)) {
-                // ajout d'un ecouteur ou listener (sert à réagir automatiquement à un évènement ou à un changement dans un intèrface utilisateur
-                tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
-                if (selectedDepartement != null){
-                    String id_dpm = selectedDepartement.getId();
-                    //System.out.println("voici l'id du département selectionner " + id_dpm);
-                    // Remplacement du "?" dans la requête SQL par l'ID sélectionné
-                    stmt.setString(1, id_dpm);
+                // Requête SQL pour supprimer un département par son ID
+                String sql_delete = "DELETE FROM departement WHERE id_departement = ?";
+                // Bloc try-with-resources pour gérer automatiquement la fermeture du PreparedStatement
+                try (PreparedStatement stmt = conn.prepareStatement(sql_delete)) {
 
-                    // Exécution de la suppression
-                    int ligneSupprimee = stmt.executeUpdate();
 
-                    if (ligneSupprimee > 0) {
-                        tableDepartement.setItems(chargerProduits());
-                        // Message de succès
-                        System.out.println("Suppression du département " + id_dpm + " réussie.");
-                    } else {
-                        // Aucun département supprimé (ID inexistant ?)
-                        System.out.println("Aucune suppression effectuée. ID introuvable ?");
-                    }
-                }else {
-                    System.out.println("Id departement introuvable");
+                        String id_dpm = selectedDepartement.getId();
+                        //System.out.println("voici l'id du département selectionner " + id_dpm);
+                        // Remplacement du "?" dans la requête SQL par l'ID sélectionné
+                        stmt.setString(1, id_dpm);
+
+                        // Exécution de la suppression
+                        int ligneSupprimee = stmt.executeUpdate();
+
+                        if (ligneSupprimee > 0) {
+                            tableDepartement.setItems(chargerProduits());
+                            // Message de succès
+                            System.out.println("Suppression du département " + id_dpm + " réussie.");
+                        } else {
+                            // Aucun département supprimé (ID inexistant ?)
+                            System.out.println("Aucune suppression effectuée. ID introuvable ?");
+                        }
+
+
+                } catch (Exception e) {
+                    // Affichage de l'erreur en cas de problème SQL
+                    System.out.println("Erreur : " + e.getMessage());
+                    System.out.println("Voici l'erreur : " + e.getMessage());
                 }
-
-            } catch (Exception e) {
-                // Affichage de l'erreur en cas de problème SQL
-                System.out.println("Erreur : " + e.getMessage());
-                System.out.println("Voici l'erreur : " + e.getMessage());
+            }else {
+                System.out.println("Id departement introuvable");
             }
+        }else{
+            int conf = JOptionPane.showConfirmDialog(
+                    null,
+                    "Veuillez selectionnez un élément dans le tableau",
+                    "avertissement",
+                    JOptionPane.CLOSED_OPTION);
         }
     }
     private void rechercherDepartement(String motCle) {
