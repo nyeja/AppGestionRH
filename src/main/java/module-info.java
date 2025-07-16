@@ -1,4 +1,4 @@
-module com.rhplus.rhplus {
+module rh {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,7 +10,10 @@ module com.rhplus.rhplus {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires java.desktop;
 
-    opens com.rhplus.rhplus to javafx.fxml;
-    exports com.rhplus.rhplus;
+    opens rh.model.departement to java.base;
+    opens rh.controller to javafx.fxml;
+    exports rh.model.departement;
+    exports rh;
 }

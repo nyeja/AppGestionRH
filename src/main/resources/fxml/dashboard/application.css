@@ -1,0 +1,8 @@
+#hboxId{
+    -fx-background-color: #3c8dbc;
+}
+#btnGauche,#btnMillieu,#btnDroite{
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 30px;
+}
+#
