@@ -1,4 +1,4 @@
-module com.rhplus.rhplus {
+module rh {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -11,6 +11,6 @@ module com.rhplus.rhplus {
     requires eu.hansolo.tilesfx;
     requires java.sql;
 
-    opens com.rhplus.rhplus to javafx.fxml;
-    exports com.rhplus.rhplus;
+    opens rh to javafx.fxml;
+    exports rh;
 }

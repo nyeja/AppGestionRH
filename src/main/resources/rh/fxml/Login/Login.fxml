@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.LoginController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="250.0" styleClass="backleft" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="62.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME!" textAlignment="CENTER">
+               <font>
+                  <Font name="Arimo SemiBold" size="23.0" />
+               </font>
+               <fill>
+                  <LinearGradient endX="0.16587677725118488" endY="0.772511848341232" startX="0.15165876777251186" startY="0.13744075829383884">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.05277777835726738" green="0.021929824724793434" blue="0.9473684430122375" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <Text fill="#f9f8ff" layoutX="60.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="© RH Flow" textAlignment="CENTER" wrappingWidth="110.0">
+               <font>
+                  <Font name="Arimo SemiBold" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="102.0" fitWidth="97.0" layoutX="78.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Images/home1.png" />
+               </image>
+            </ImageView>
+         </children>
+         <stylesheets>
+            <URL value="@../Style.css" />
+            <URL value="@Style.css" />
+         </stylesheets>
+      </AnchorPane>
+      <AnchorPane layoutX="249.0" prefHeight="400.0" prefWidth="352.0" styleClass="ringform" stylesheets="@../../../../Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="47.0" fitWidth="48.0" layoutX="154.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Images/cadenas.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="41.0" layoutY="76.0" text="Username :">
+               <font>
+                  <Font name="Arimo SemiBold" size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="IdUser" layoutX="139.0" layoutY="71.0" prefHeight="32.0" prefWidth="188.0" promptText="Ex: Jean" styleClass="idUser" stylesheets="@../Style.css" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="71.0" />
+            <Label layoutX="41.0" layoutY="121.0" text="Password :">
+               <font>
+                  <Font name="Arimo SemiBold" size="16.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="IdPassword" layoutX="139.0" layoutY="118.0" prefHeight="32.0" prefWidth="188.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="23.0" />
+            <Button fx:id="LoginId" alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="274.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="296.0" styleClass="LoginId" text="Login" textAlignment="CENTER" textFill="#393737">
+               <font>
+                  <Font name="Arimo SemiBold" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="BackId" alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="320.0" mnemonicParsing="false" onAction="#EXIT" prefHeight="32.0" prefWidth="296.0" text="Cancel" textAlignment="CENTER">
+               <font>
+                  <Font name="Arimo SemiBold" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <CheckBox layoutX="32.0" layoutY="195.0" mnemonicParsing="false" text="Remember Me" />
+            <Hyperlink layoutX="214.0" layoutY="191.0" text="Forgot Password" />
+            <Hyperlink fx:id="IdRegister" layoutX="241.0" layoutY="366.0" text="Register">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Hyperlink>
+            <Label layoutX="85.0" layoutY="371.0" text="Don't have an account ? ">
+               <font>
+                  <Font name="Arimo SemiBold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="AllertMessage" layoutX="98.0" layoutY="165.0" text="Invalid Login Pleas Try Again " textFill="#eb0707" />
+            <ChoiceBox layoutX="126.0" layoutY="227.0" prefWidth="150.0" />
+            <Label layoutX="59.0" layoutY="227.0" text="Role :">
+               <font>
+                  <Font name="Arimo SemiBold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
