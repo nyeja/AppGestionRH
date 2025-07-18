@@ -13,7 +13,9 @@ module rh {
     requires java.desktop;
 
     opens rh.model.departement to java.base;
+    opens rh.model.employe to java.base;
     opens rh.controller to javafx.fxml;
     exports rh.model.departement;
+    exports rh.model.employe;
     exports rh;
 }

@@ -76,7 +76,7 @@ public class departementController {
     @FXML
     public void initialize() {
         // Ajoute des options à la ChoiceBox
-       String sql = "SELECT nom FROM poste";
+        String sql = "SELECT nom FROM poste";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             cbResponsable.getItems().clear();
             while (rs.next()) {
@@ -373,6 +373,15 @@ public class departementController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public void viderChamps(){
+        int zero = 0 ;
+        tfNom.clear();
+        tfCode.clear();
+        cbResponsable.setValue("");
+        tfDescription.clear();
+        tfLocalisation.clear();
+        tfNombreEmployer.setText(String.valueOf(zero));
     }
 
 }

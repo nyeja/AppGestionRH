@@ -53,5 +53,10 @@ public class dashboardController {
         stackPaneDepartement.getChildren().setAll(node);
 
     }
+    @FXML
+    private  void loadEmployer() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/employe/employe.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
 
 }

@@ -30,7 +30,7 @@
                   <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="220.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion DPE" textFill="WHITE">
                     <items>
                       <MenuItem fx:id="itemPoste" mnemonicParsing="false" onAction="#infoPoste" text="Poste" />
-                      <MenuItem fx:id="itemEmployer" mnemonicParsing="false" onAction="#infoEmployer" text="Employer" />
+                      <MenuItem fx:id="itemEmployer" mnemonicParsing="false" onAction="#loadEmployer" text="Employer" />
                         <MenuItem fx:id="itemDepartement" mnemonicParsing="false" onAction="#loadDepartementView" text="Département" />
                     </items>
                      <font>
