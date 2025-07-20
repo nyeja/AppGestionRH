@@ -25,7 +25,7 @@
                       <TableColumn fx:id="colNomDepartement" minWidth="8.0" prefWidth="152.0" text="NOM_DEPARTEMENT" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="txtRecherche" layoutX="504.0" layoutY="27.0" prefHeight="36.0" prefWidth="398.0" promptText="Rechercher un poste..." style="                    -fx-background-radius: 20;                    -fx-border-radius: 20;                    -fx-border-color: #ccc;                    -fx-border-width: 1;                    -fx-padding: 5 10;                    -fx-background-color: #f9f9f9;                " />
+                  <TextField fx:id="txtRecherche" layoutX="504.0" layoutY="27.0" prefHeight="36.0" prefWidth="398.0" promptText="Rechercher un poste..." style="-fx-background-radius: 20;-fx-border-radius: 20;-fx-border-color: #ccc;-fx-border-width: 1;-fx-padding: 5 10;-fx-background-color: #f9f9f9;" />
                   <Text layoutX="34.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOM :" />
                   <Text layoutX="34.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOCALISATION :" />
                   <TextField fx:id="txtNom" layoutX="141.0" layoutY="180.0" prefHeight="36.0" prefWidth="200.0" />

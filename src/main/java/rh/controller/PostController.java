@@ -101,7 +101,7 @@ public class PostController {
 
     private void loadPostes() {
         posteList.clear();
-        String sql = "SELECT ID_POSTE, NOM, LOCALISATION, ID_DEPARTEMENT, NOM_DEPARTEMENT FROM POSTE ORDER BY ID_POSTE DESC";
+        String sql = "SELECT ID_POSTE, NOM, LOCALISATION, ID_DEPARTEMENT FROM POSTE ORDER BY ID_POSTE DESC";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
