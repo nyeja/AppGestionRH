@@ -11,6 +11,9 @@ module rh {
     requires eu.hansolo.tilesfx;
     requires java.sql;
 
+    opens rh.controller to javafx.fxml;
+    exports rh.controller;
+
     opens rh to javafx.fxml;
     exports rh;
 }
