@@ -17,15 +17,19 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         
         
-         // Charge le FXML depuis le bon chemin
-        Parent root = FXMLLoader.load(getClass().getResource("/rh/fxml/Login/Login.fxml"));
+         /* Charge le FXML depuis le bon chemin
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/rh/fxml/Login/Login.fxml"));
+        Parent root = loader.load();
+        
         Scene scene = new Scene(root);
+        primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Login System");
-        primaryStage.show();
+        primaryStage.setResizable(false); // Pour respecter tes dimensions fixes
+        primaryStage.show();*/
         
         
-        /* Charge le FXML depuis resources/rh/fxml/post/post.fxml
+        // Charge le FXML depuis resources/rh/fxml/post/post.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/rh/fxml/post/post.fxml"));
         Parent root = loader.load();
         
@@ -33,7 +37,7 @@ public class Main extends Application {
         primaryStage.setTitle("Gestion des Postes");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false); // Pour respecter tes dimensions fixes
-        primaryStage.show();*/
+        primaryStage.show();/**/
     }
 
     public static void main(String[] args) {
