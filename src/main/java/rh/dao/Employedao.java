@@ -1,12 +1,12 @@
 package rh.dao;
 
-import rh.model.employe;
+import rh.model.EmployeModel;
 import rh.utils.ConnexionDB;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class employedao {
+public class Employedao {
 
     public String getNextEmployeId() throws SQLException {
         String sql = "SELECT get_next_employe_id() FROM dual";
@@ -21,17 +21,17 @@ public class employedao {
         }
     }
 
-    public void ajouterEmploye(employe Employe) throws SQLException {
+    public void ajouterEmploye(EmployeModel EmployeModel) throws SQLException {
         String sql = "INSERT INTO employe (nom, prenoms, telephone, email, adresse, date_embauche) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnexionDB.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, Employe.getNom());
-            ps.setString(2, Employe.getPrenom());
-            ps.setInt(3, Employe.getTelephone());
-            ps.setString(4, Employe.getEmail());
-            ps.setString(5, Employe.getAdresse());
-            ps.setDate(6, new java.sql.Date(Employe.getDateEmbauche().getTime()));
+            ps.setString(1, EmployeModel.getNom());
+            ps.setString(2, EmployeModel.getPrenom());
+            ps.setInt(3, EmployeModel.getTelephone());
+            ps.setString(4, EmployeModel.getEmail());
+            ps.setString(5, EmployeModel.getAdresse());
+            ps.setDate(6, new java.sql.Date(EmployeModel.getDateEmbauche().getTime()));
 //            ps.setString(7, Employe.getDepartement());
 //            ps.setString(8, Employe.getPoste());
 
@@ -40,7 +40,7 @@ public class employedao {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
                         String generatedId = rs.getString(1);
-                        Employe.setId(generatedId);
+                        EmployeModel.setId(generatedId);
                         System.out.println("Employé ajouté avec ID : " + generatedId);
                     }
                 }
@@ -48,24 +48,24 @@ public class employedao {
         }
     }
 
-    public void modifierEmploye(employe Employe) throws SQLException {
+    public void modifierEmploye(EmployeModel EmployeModel) throws SQLException {
         String sql = "UPDATE employe SET nom=?, prenoms=?, telephone=?, email=?, adresse=?, date_embauche=? WHERE id=?";
         try (Connection connection = ConnexionDB.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setString(1, Employe.getNom());
-            ps.setString(2, Employe.getPrenom());
-            ps.setInt(3, Employe.getTelephone());
-            ps.setString(4, Employe.getEmail());
-            ps.setString(5, Employe.getAdresse());
-            ps.setDate(6, new java.sql.Date(Employe.getDateEmbauche().getTime()));
+            ps.setString(1, EmployeModel.getNom());
+            ps.setString(2, EmployeModel.getPrenom());
+            ps.setInt(3, EmployeModel.getTelephone());
+            ps.setString(4, EmployeModel.getEmail());
+            ps.setString(5, EmployeModel.getAdresse());
+            ps.setDate(6, new java.sql.Date(EmployeModel.getDateEmbauche().getTime()));
 //            ps.setString(7, Employe.getDepartement());
 //            ps.setString(8, Employe.getPoste());
-           ps.setString(7, Employe.getId());
+           ps.setString(7, EmployeModel.getId());
 
             int rowsUpdated = ps.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("Employé modifié avec succès : " + Employe.getId());
+                System.out.println("Employé modifié avec succès : " + EmployeModel.getId());
             }
 
 
@@ -85,15 +85,15 @@ public class employedao {
         }
     }
 
-    public List<employe> getAllEmployes() {
-        List<employe> liste = new ArrayList<>();
+    public List<EmployeModel> getAllEmployes() {
+        List<EmployeModel> liste = new ArrayList<>();
         String sql = "SELECT * FROM employe ";
         try (Connection conn = ConnexionDB.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                employe e = new employe(
+                EmployeModel e = new EmployeModel(
                         rs.getString("id"),
                         rs.getString("nom"),
                         rs.getString("prenoms"),
@@ -112,7 +112,7 @@ public class employedao {
         return liste;
     }
 
-    public employe getEmployeById(String id) throws SQLException {
+    public EmployeModel getEmployeById(String id) throws SQLException {
         String sql = "SELECT * FROM employe WHERE id=?";
         try (Connection conn = ConnexionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -120,7 +120,7 @@ public class employedao {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new employe(
+                    return new EmployeModel(
                             rs.getString("id"),
                             rs.getString("nom"),
                             rs.getString("prenoms"),

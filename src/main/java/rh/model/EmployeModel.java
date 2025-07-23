@@ -2,7 +2,7 @@ package rh.model;
 
 import java.util.Date;
 
-public class employe {
+public class EmployeModel {
     private String id;
     private String nom;
     private String prenom;
@@ -14,25 +14,12 @@ public class employe {
     private String poste;
 
     // Constructeur par défaut
-    public employe() {}
-
-    // Constructeur avec tous les arguments
-    public employe(String id, String nom, String prenom, int telephone, String email,
-                   String adresse, Date dateEmbauche, String departement, String poste) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.telephone = telephone;
-        this.email = email;
-        this.adresse = adresse;
-        this.dateEmbauche = dateEmbauche;
-        this.departement = departement;
-        this.poste = poste;
-    }
+    //On en a besoin au controller
+    public EmployeModel() {}
 
     // Constructeur sans département et poste (pour compatibilité)
-    public employe(String id, String nom, String prenom, int telephone, String email,
-                   String adresse, Date dateEmbauche) {
+    public EmployeModel(String id, String nom, String prenom, int telephone, String email,
+                        String adresse, Date dateEmbauche) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;

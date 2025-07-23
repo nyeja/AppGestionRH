@@ -1,38 +1,36 @@
-package rh;
+package rh; // Assurez-vous que le package correspond à celui de votre Main.java
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.net.URL;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-        URL fxmlLocation = getClass().getResource("/fxml/Employe.fxml");
-        if (fxmlLocation == null) {
-            throw new IllegalStateException("Le fichier FXML est introuvable !");
+    public void start(Stage primaryStage) {
+        try {
+            // Charge la vue de connexion comme première interface
+            // Assurez-vous que le chemin vers Login.fxml est correct
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("RHPlus - Connexion"); // Titre de la fenêtre de connexion
+            primaryStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de la vue de connexion : " + e.getMessage());
         }
-
-        Parent root = FXMLLoader.load(fxmlLocation);
-        Scene scene = new Scene(root);
-
-        // Charger le CSS
-//        URL cssLocation = getClass().getResource("/employee-styles.css");
-//        if (cssLocation != null) {
-//            scene.getStylesheets().add(cssLocation.toExternalForm());
-//        }
-
-        stage.setScene(scene);
-        stage.setTitle("RHPlus - Gestion des employés");
-        stage.setMinWidth(1100);
-        stage.setMinHeight(700);
-        stage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch(args); // Lance l'application JavaFX
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f8d7da; -fx-border-color: #dc3545; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Oups ! Une erreur est survenue." textFill="#dc3545">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="errorMessageLabel" alignment="CENTER" contentDisplay="CENTER" text="Nous n'avons pas pu charger la page demandée ou votre rôle n'est pas autorisé à accéder à cette section." textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#handleReturnToLogin" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold;" text="Retour à la connexion" />
+    </children>
+</VBox>

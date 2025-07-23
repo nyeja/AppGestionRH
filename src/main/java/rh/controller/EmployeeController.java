@@ -1,7 +1,7 @@
 package rh.controller;
 
-import rh.dao.employedao;
-import rh.model.employe;
+import rh.dao.Employedao;
+import rh.model.EmployeModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,29 +44,29 @@ public class EmployeeController implements Initializable {
     @FXML private TextField txtRecherche;
 
     // Tableau
-    @FXML private TableView<employe> tableEmployes;
-    @FXML private TableColumn<employe, String> colId;
-    @FXML private TableColumn<employe, String> colNom;
-    @FXML private TableColumn<employe, String> colPrenom;
-    @FXML private TableColumn<employe, String> colEmail;
-    @FXML private TableColumn<employe, Integer> colTelephone;
-    @FXML private TableColumn<employe, Date> colDateEmbauche;
-    @FXML private TableColumn<employe, String> colDepartement;
-    @FXML private TableColumn<employe, String> colPoste;
-    @FXML private TableColumn<employe, String> colAdresse;
+    @FXML private TableView<EmployeModel> tableEmployes;
+    @FXML private TableColumn<EmployeModel, String> colId;
+    @FXML private TableColumn<EmployeModel, String> colNom;
+    @FXML private TableColumn<EmployeModel, String> colPrenom;
+    @FXML private TableColumn<EmployeModel, String> colEmail;
+    @FXML private TableColumn<EmployeModel, Integer> colTelephone;
+    @FXML private TableColumn<EmployeModel, Date> colDateEmbauche;
+    @FXML private TableColumn<EmployeModel, String> colDepartement;
+    @FXML private TableColumn<EmployeModel, String> colPoste;
+    @FXML private TableColumn<EmployeModel, String> colAdresse;
 
     // Barre de statut
     @FXML private Label lblStatut;
     @FXML private Label lblNombreEmployes;
 
     // DAO et données
-    private employedao employeDAO;
-    private ObservableList<employe> employeeList;
-    private employe selectedEmployee;
+    private Employedao employeDAO;
+    private ObservableList<EmployeModel> employeeList;
+    private EmployeModel selectedEmployee;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        employeDAO = new employedao();
+        employeDAO = new Employedao();
         employeeList = FXCollections.observableArrayList();
 
         initializeTableColumns();
@@ -92,8 +92,8 @@ public class EmployeeController implements Initializable {
         colAdresse.setCellValueFactory(new PropertyValueFactory<>("adresse"));
 
         // Formater la date dans le tableau
-        colDateEmbauche.setCellFactory(column -> new TableCell<employe, Date>() {
-            private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        colDateEmbauche.setCellFactory(column -> new TableCell<EmployeModel, Date>() {
+            private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
             @Override
             protected void updateItem(Date item, boolean empty) {
@@ -145,7 +145,7 @@ public class EmployeeController implements Initializable {
 
     private void loadEmployees() {
         try {
-            List<employe> employees = employeDAO.getAllEmployes();
+            List<EmployeModel> employees = employeDAO.getAllEmployes();
             employeeList.clear();
             employeeList.addAll(employees);
             updateEmployeeCount();
@@ -163,7 +163,7 @@ public class EmployeeController implements Initializable {
         }
 
         try {
-            employe employee = createEmployeeFromForm();
+            EmployeModel employee = createEmployeeFromForm();
             employeDAO.ajouterEmploye(employee);
             showSuccess("Employé ajouté avec succès avec l'ID : " + employee.getId());
             loadEmployees();
@@ -186,7 +186,7 @@ public class EmployeeController implements Initializable {
         }
 
         try {
-            employe employee = createEmployeeFromForm();
+            EmployeModel employee = createEmployeeFromForm();
             employee.setId(selectedEmployee.getId());
             employeDAO.modifierEmploye(employee);
             showSuccess("Employé modifié avec succès");
@@ -286,7 +286,7 @@ public class EmployeeController implements Initializable {
 
     @FXML
     private void selectionnerEmploye(MouseEvent event) {
-        employe employee = tableEmployes.getSelectionModel().getSelectedItem();
+        EmployeModel employee = tableEmployes.getSelectionModel().getSelectedItem();
         if (employee != null) {
             selectedEmployee = employee;
             fillFormWithEmployee(employee);
@@ -296,7 +296,7 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    private void fillFormWithEmployee(employe employee) {
+    private void fillFormWithEmployee(EmployeModel employee) {
         txtEmployeeId.setText(employee.getId());
         txtNom.setText(employee.getNom());
         txtPrenom.setText(employee.getPrenom());
@@ -315,8 +315,8 @@ public class EmployeeController implements Initializable {
         comboPoste.setValue(employee.getPoste());
     }
 
-    private employe createEmployeeFromForm() {
-        employe employee = new employe();
+    private EmployeModel createEmployeeFromForm() {
+        EmployeModel employee = new EmployeModel();
         employee.setNom(txtNom.getText().trim());
         employee.setPrenom(txtPrenom.getText().trim());
         employee.setEmail(txtEmail.getText().trim());

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.RhCongeController">
+    <children>
+        <Label layoutX="30.0" layoutY="25.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Gestion des Demandes de Congé" />
+
+        <TableView fx:id="congeTable" layoutX="30.0" layoutY="70.0" prefHeight="450.0" prefWidth="840.0">
+            <columns>
+                <TableColumn fx:id="colIdConge" prefWidth="80.0" text="ID Congé" />
+                <TableColumn fx:id="colMatriculeEmploye" prefWidth="100.0" text="Matricule" />
+                <TableColumn fx:id="colDateDebut" prefWidth="100.0" text="Date Début" />
+                <TableColumn fx:id="colDateFin" prefWidth="100.0" text="Date Fin" />
+                <TableColumn fx:id="colTypeConge" prefWidth="100.0" text="Type" />
+                <TableColumn fx:id="colJustificatif" prefWidth="180.0" text="Justificatif" />
+                <TableColumn fx:id="colStatut" prefWidth="80.0" text="Statut" />
+            </columns>
+        </TableView>
+
+        <HBox layoutX="30.0" layoutY="535.0" spacing="10.0">
+            <Button fx:id="btnApprouver" onAction="#handleApprouver" text="Approuver" />
+            <Button fx:id="btnRefuser" onAction="#handleRefuser" text="Refuser" />
+            <Button fx:id="btnActualiser" onAction="#loadCongeRequests" text="Actualiser" />
+        </HBox>
+        <Label fx:id="messageStatutRh" layoutX="30.0" layoutY="570.0" text="Chargement des demandes..." />
+    </children>
+</AnchorPane>
