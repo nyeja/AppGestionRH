@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="rh.controller.ValiderDemandeController">
+
+    <top>
+        <Label text="Demandes de changement de mot de passe" style="-fx-font-size: 20px;" BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+      <VBox spacing="10">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <TableView fx:id="tableDemandes" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colUsername" text="Utilisateur" prefWidth="150"/>
+            <TableColumn fx:id="colNouveauMdp" text="Nouveau MDP" prefWidth="150"/>
+            <TableColumn fx:id="colDate" text="Date de demande" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <Button text="✅ Valider la demande sélectionnée" onAction="#handleValiderDemande"/>
+</VBox>
+
+    </center>
+
+</BorderPane>

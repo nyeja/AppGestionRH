@@ -7,8 +7,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.fxml.FXMLLoader;
+
+
+import rh.dao.EmployerDAO;
+import rh.model.Employer;
 
 public class LoginController {
     @FXML
@@ -20,49 +27,60 @@ public class LoginController {
     @FXML
     private ChoiceBox<String> roleChoiceBox;
     @FXML
-    private Label errorLabel;
-
-    // Simule une base de données d'utilisateurs
-    private final Map<String, User> users = new HashMap<>();
+    private Label AllertMessage;
 
     @FXML
-public void initialize() {
-    System.out.println("Initialisation du contrôleur...");
-    System.out.println("roleChoiceBox est null ? " + (roleChoiceBox == null));
-    
-    // Initialisation des utilisateurs
-    users.put("admin", new User("admin", "admin123", "RH"));
-    users.put("jean", new User("jean", "password123", "Employer"));
+    public void initialize() {
+        System.out.println("Initialisation du contrôleur...");
+        System.out.println("roleChoiceBox est null ? " + (roleChoiceBox == null));
 
-    if (roleChoiceBox != null) {
-        // Configuration du ChoiceBox
-        roleChoiceBox.getItems().addAll("RH", "Employer");
-        roleChoiceBox.setValue("Employer");
-    } else {
-        System.err.println("ERREUR: roleChoiceBox n'a pas été injecté par FXMLLoader !");
-    }
-
-    // Charger les identifiants enregistrés
-    loadRememberedCredentials();
-}
-
-    @FXML
-    private void handleLogin(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String role = roleChoiceBox.getValue();
-
-        if (authenticate(username, password, role)) {
-            saveRememberedCredentials();
-            errorLabel.setVisible(false);
-            openInterface(role);
-            ((Stage) usernameField.getScene().getWindow()).close();
+        if (roleChoiceBox != null) {
+            roleChoiceBox.getItems().addAll("RH", "Employer");
+            roleChoiceBox.setValue("Employer");
         } else {
-            errorLabel.setText("Invalid Login Please Try Again");
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setVisible(true);
+            System.err.println("ERREUR: roleChoiceBox n'a pas été injecté par FXMLLoader !");
         }
+
+        loadRememberedCredentials();
     }
+
+    @FXML
+private void handleLogin(ActionEvent event) {
+    String username = usernameField.getText();
+    String password = passwordField.getText();
+    String role = roleChoiceBox.getValue();
+
+    System.out.println("Saisie utilisateur : " + username + ", " + password + ", " + role);
+
+    EmployerDAO employerDAO = new EmployerDAO();
+    Employer user = employerDAO.trouverParUsername(username);
+
+    if (user != null) {
+        System.out.println("Utilisateur DB : " + user.getUsername() + ", " + user.getPassword() + ", " + user.getRole());
+    } else {
+        System.out.println("Aucun utilisateur trouvé avec ce username.");
+    }
+
+    if (user != null && user.getUsername().equals(username)
+            && user.getPassword().equals(password)
+            && user.getRole().equalsIgnoreCase(role)) {
+
+        saveRememberedCredentials();
+        AllertMessage.setVisible(false);
+        openInterface(role);
+        ((Stage) usernameField.getScene().getWindow()).close();
+
+    } else {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de connexion");
+        alert.setHeaderText("Identifiants incorrects");
+        alert.setContentText("Nom d'utilisateur, mot de passe ou rôle invalide.");
+        alert.showAndWait();
+
+        AllertMessage.setTextFill(Color.RED);
+        AllertMessage.setVisible(true);
+    }
+}
 
     @FXML
     public void EXIT(ActionEvent event) {
@@ -70,19 +88,30 @@ public void initialize() {
     }
 
     private void openInterface(String role) {
-        Stage stage = new Stage();
-        Label label = new Label("Bienvenue dans l'interface " + role);
-        VBox root = new VBox(label);
-        javafx.scene.Scene scene = new javafx.scene.Scene(root, 400, 300);
-        stage.setScene(scene);
-        stage.setTitle("Interface " + role);
-        stage.show();
-    }
+    try {
+        String fxmlPath = "";
 
-    private boolean authenticate(String username, String password, String role) {
-        User user = users.get(username);
-        return user != null && user.getPassword().equals(password) && user.getRole().equals(role);
+        if (role.equalsIgnoreCase("RH")) {
+            fxmlPath = "/rh/fxml/RH/RH.fxml";
+        } else if (role.equalsIgnoreCase("Employer")) {
+            fxmlPath = "/rh/fxml/Employer/Employer.fxml"; // à créer plus tard si besoin
+        }
+       if (!fxmlPath.isEmpty()) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Interface " + role);
+            stage.show();
+        } else {
+            System.err.println("Aucune interface définie pour le rôle : " + role);
+        }
+
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     private void loadRememberedCredentials() {
         File file = new File("remembered_credentials.txt");
@@ -93,44 +122,47 @@ public void initialize() {
                 roleChoiceBox.setValue(reader.readLine());
                 rememberMeCheckBox.setSelected(true);
             } catch (IOException e) {
-                // Fichier corrompu ou erreur de lecture
                 file.delete();
             }
         }
     }
 
     private void saveRememberedCredentials() {
+        if (rememberMeCheckBox == null || usernameField == null || passwordField == null || roleChoiceBox == null) {
+            System.err.println("Un ou plusieurs champs ne sont pas initialisés !");
+            return;
+        }
+
         File file = new File("remembered_credentials.txt");
-        if (rememberMeCheckBox.isSelected()) {
-            try (PrintWriter writer = new PrintWriter(file)) {
-                writer.println(usernameField.getText());
-                writer.println(passwordField.getText());
-                writer.println(roleChoiceBox.getValue());
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if (rememberMeCheckBox.isSelected()) {
+                try (PrintWriter writer = new PrintWriter(file)) {
+                    writer.println(usernameField.getText());
+                    writer.println(passwordField.getText());
+                    writer.println(roleChoiceBox.getValue());
+                }
+            } else {
+                if (file.exists()) {
+                    file.delete();
+                }
             }
-        } else {
-            file.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
-    private static class User {
-        private final String username;
-        private final String password;
-        private final String role;
-
-        public User(String username, String password, String role) {
-            this.username = username;
-            this.password = password;
-            this.role = role;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public String getRole() {
-            return role;
-        }
+    
+    @FXML
+    private void handleForgotPassword() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/rh/fxml/Password/Forgot_password.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Forgot Password");
+        stage.setScene(new Scene(root));
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 }

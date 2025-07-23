@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="rh.controller.EmployerController">
+
+    <top>
+        <Label text="Bienvenue dans l’espace Employé"
+               style="-fx-font-size: 20px; -fx-padding: 15px;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20px;">
+            <Button text="Demande de conger" fx:id="DemandeCongerdButton" onAction="#DemandeConger"/>
+            <Button text="Consulter mon profil" fx:id="viewProfileButton" onAction="#handleViewProfile"/>
+            <Button text="Déconnexion" onAction="#handleLogout"/>
+        </VBox>
+    </center>
+
+</BorderPane>
