@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="rh.controller.RHController">
+
+    <top>
+        <Label text="Bienvenue RH" style="-fx-font-size: 24px; -fx-padding: 10px;" BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Button text="📁 Gérer les postes" onAction="#gererPostes"/>
+            <Button text="🔐 Valider demandes de mot de passe" onAction="#validerDemandes"/>
+            <Button text="🚪 Se déconnecter" onAction="#deconnexion"/>
+        </VBox>
+    </center>
+
+</BorderPane>

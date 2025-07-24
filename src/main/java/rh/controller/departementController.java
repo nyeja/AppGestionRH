@@ -98,7 +98,6 @@ public class departementController {
             rechercherDepartement(newValue);
         });
         // Mettre le boutton valider invisible
-        modifValider.setVisible(false);
         try {
            // Liaison des colonnes aux propriétés de la classe tableauDepartement
            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -223,7 +222,6 @@ public class departementController {
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
         if (selectedDepartement != null){
             tfNombreEmployer.setDisable(false);
-            modifValider.setVisible(true);
             // System.out.println("Voici l'élément selectionner "+ "Id : " + selectedDepartement.getId()+ "\nnom : " + selectedDepartement.getNom());
             // recupération des données dans le tableview
             String nom = selectedDepartement.getNom();

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #E2E7E9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.dashboardController">
+<AnchorPane prefHeight="610.0" prefWidth="1200.0" style="-fx-background-color: #E2E7E9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.dashboardController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="6.0" layoutY="4.0" prefHeight="591.0" prefWidth="206.0" style="-fx-background-color: #153793;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="994.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,9 +27,9 @@
             </Pane>
             <Pane prefHeight="362.0" prefWidth="206.0">
                <children>
-                  <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="220.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion DPE" textFill="WHITE">
+                  <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="220.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion DPE" textFill="WHITE">
                     <items>
-                      <MenuItem fx:id="itemPoste" mnemonicParsing="false" onAction="#infoPoste" text="Poste" />
+                      <MenuItem fx:id="itemPoste" mnemonicParsing="false" onAction="#loadPoste" text="Poste" />
                       <MenuItem fx:id="itemEmployer" mnemonicParsing="false" onAction="#loadEmployer" text="Employer" />
                         <MenuItem fx:id="itemDepartement" mnemonicParsing="false" onAction="#loadDepartementView" text="Département" />
                     </items>
@@ -37,17 +37,12 @@
                         <Font size="15.0" />
                      </font>
                   </MenuButton>
-                  <Button alignment="CENTER" layoutX="46.0" layoutY="112.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion de congé" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="46.0" layoutY="129.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: none;" text="Gestion de congé" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="47.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: none;" text="Gestion d'absence" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button alignment="CENTER" layoutX="40.0" layoutY="185.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="153.0" style="-fx-background-color: none;" text="Gestion de retard" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="52.0" layoutY="173.0" mnemonicParsing="false" onAction="#loadPresence" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: none;" text="Gestion de présence" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -62,19 +57,14 @@
                         <Image url="@../../../../../../../../../../../page-daccueil.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="22.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="23.0" layoutX="22.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../../../../../../jour-de-conge.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="20.0" fitWidth="23.0" layoutX="25.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="20.0" fitWidth="23.0" layoutX="25.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../../../../../../absence.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="26.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../../../../en-retard.png" />
                      </image>
                   </ImageView>
                   <Pane layoutX="16.0" layoutY="7.0" prefHeight="4.0" prefWidth="171.0" style="-fx-background-color: white;" />
@@ -111,6 +101,6 @@
             </Label>
          </children>
       </StackPane>
-      <StackPane fx:id="stackPaneDepartement" layoutX="264.0" layoutY="1.0" prefHeight="610.0" prefWidth="921.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="1.0" />
+      <StackPane fx:id="stackPaneDepartement" layoutX="204.0" layoutY="1.0" prefHeight="599.0" prefWidth="994.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="204.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

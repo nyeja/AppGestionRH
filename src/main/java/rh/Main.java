@@ -11,6 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard/dashboard.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/poste/poste.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/employe/employe.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/departement/dpm.fxml"));

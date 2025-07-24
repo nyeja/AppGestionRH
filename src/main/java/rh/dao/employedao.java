@@ -113,16 +113,18 @@ public class employedao {
 
                 String id = rs.getString("id");
                 String nom = rs.getString("nom");
-                String prenoms  = rs.getString("prenoms");
+                String prenoms = rs.getString("prenoms");
                 int telephone = rs.getInt("telephone");
                 String email = rs.getString("email");
-                String addresse = rs.getString("adresse");
-                Date date = rs.getDate("date_embauche"); // type java.sql.Date
+                String adresse = rs.getString("adresse");
+                Date date = rs.getDate("date_embauche");
                 String departement = rs.getString("departement");
-                String poste = rs.getString("ID_POSTE");
+                String poste = rs.getString("id_poste");
 
-                listEmploye.add(new employe(id , nom , prenoms , telephone , email , addresse , date , departement, poste ));
-
+                // Ajout de l'objet employe avec tous les paramètres
+                listEmploye.add(new employe(
+                        id, nom, prenoms, telephone, email, adresse, date,
+                        departement, poste ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,9 +147,11 @@ public class employedao {
                             rs.getInt("telephone"),
                             rs.getString("email"),
                             rs.getString("adresse"),
-                            rs.getDate("date_embauche")
-//                            rs.getString("departement"),
-//                            rs.getString("poste")
+                            rs.getDate("date_embauche"),
+                            rs.getString("departement"),
+                            rs.getString("id_poste"),
+                            rs.getString("type_contrat"),
+                            rs.getString("img")
                     );
                 }
             }

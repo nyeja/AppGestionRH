@@ -24,7 +24,13 @@ public class dashboardController {
     @FXML private StackPane stackPaneDepartement;
 
     @FXML
+    private void initialize(){
+        stackPaneDepartement.getChildren().setAll(stackPaneHome);
+        stackPaneHome.setVisible(true);
+    }
+    @FXML
     private void afficherAcceuil(){
+        stackPaneDepartement.getChildren().setAll(stackPaneHome);
         stackPaneHome.setVisible(true);
     }
 
@@ -53,9 +59,22 @@ public class dashboardController {
         stackPaneDepartement.getChildren().setAll(node);
 
     }
+
     @FXML
     private  void loadEmployer() throws IOException{
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/employe/employe.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+
+    @FXML
+    private  void loadPoste() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/poste/poste.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+
+    @FXML
+    private void loadPresence() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
 

@@ -12,10 +12,30 @@ public class employe {
     private Date dateEmbauche;
     private String departement;
     private String poste;
+    private String motDePasse;
+    private String image; // peut contenir un chemin ou juste le nom de fichier
 
     // Constructeur par défaut
     public employe() {}
 
+    // Constructeur avec tous les arguments
+    public employe(String id, String nom, String prenom, int telephone, String email,
+                   String adresse, Date dateEmbauche, String departement, String poste,
+                   String motDePasse, String image) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.telephone = telephone;
+        this.email = email;
+        this.adresse = adresse;
+        this.dateEmbauche = dateEmbauche;
+        this.departement = departement;
+        this.poste = poste;
+        this.motDePasse = motDePasse;
+        this.image = image;
+    }
+
+    // constructeur sans img et mot de pass
     // Constructeur avec tous les arguments
     public employe(String id, String nom, String prenom, int telephone, String email,
                    String adresse, Date dateEmbauche, String departement, String poste) {
@@ -28,18 +48,8 @@ public class employe {
         this.dateEmbauche = dateEmbauche;
         this.departement = departement;
         this.poste = poste;
-    }
-
-    // Constructeur sans département et poste (pour compatibilité)
-    public employe(String id, String nom, String prenom, int telephone, String email,
-                   String adresse, Date dateEmbauche) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.telephone = telephone;
-        this.email = email;
-        this.adresse = adresse;
-        this.dateEmbauche = dateEmbauche;
+        this.motDePasse = motDePasse;
+        this.image = image;
     }
 
     // Getters et setters
@@ -69,6 +79,12 @@ public class employe {
 
     public String getPoste() { return poste; }
     public void setPoste(String poste) { this.poste = poste; }
+
+    public String getMotDePasse() { return motDePasse; }
+    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
+
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 
     @Override
     public String toString() {

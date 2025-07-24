@@ -1,6 +1,10 @@
 package rh.controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import rh.dao.employedao;
 import rh.model.departement.tableauDepartement;
 import rh.model.employe.employe;
@@ -15,6 +19,9 @@ import javafx.scene.input.MouseEvent;
 import rh.utils.ConnexionDB;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,7 +51,8 @@ public class EmployeeController implements Initializable {
     @FXML private Button btnAjouter;
     @FXML private Button btnModifier;
     @FXML private Button btnSupprimer;
-    @FXML private Button btnVider;
+    @FXML private Button btnValiderModification;
+    @FXML private Button btnViderChamps;
     @FXML private Button btnActualiser;
     @FXML private Button btnRechercher;
 
@@ -86,6 +94,17 @@ public class EmployeeController implements Initializable {
         tfRecherche.textProperty().addListener((observable, oldValue, newValue) -> {
             rechercherEmploye(newValue);
         });
+
+        ajouterListeners();
+
+        btnImport.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                Window window = btnImport.getScene().getWindow();
+                setupImportButton(window);
+            }
+        });
+
+
 
         // Désactiver le bouton modifier et supprimer au début
 
@@ -166,6 +185,36 @@ public class EmployeeController implements Initializable {
         }
     }
 
+    /**
+     * Configure l'action d'importation d'image
+     */
+    @FXML
+    private Button btnImport;
+
+    @FXML
+    private ImageView imageView;
+    private void setupImportButton(Window window) {
+        btnImport.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choisir une image");
+
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Fichiers image", "*.png", "*.jpg", "*.jpeg", "*.gif")
+            );
+
+            File selectedFile = fileChooser.showOpenDialog(window);
+
+            if (selectedFile != null) {
+                try (InputStream fis = new FileInputStream(selectedFile)) {
+                    Image image = new Image(fis);
+                    imageView.setImage(image);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
     @FXML
     private void ajouterEmploye() {
         if (!validateForm()) {
@@ -210,11 +259,27 @@ public class EmployeeController implements Initializable {
         loadEmployees();
     }
 */
+private void chargerImageParDefaut() {
+    try {
+        // Chargement depuis le dossier resources (accessible via le classpath)
+        Image image = new Image(getClass().getResource("/img/utilisateur.png").toExternalForm());
+        imageView.setImage(image);
+    } catch (Exception e) {
+        e.printStackTrace();
+        imageView.setImage(null);
+        System.out.println("Image par défaut introuvable dans resources/img/");
+    }
+}
+
+
 @FXML
-private void preparModificationDepartement(){
+private void preparModificationEmploye(){
+    Connection conn = ConnexionDB.getConnection();
     // Selectionner les données dans le tableau
     employe selectedEmploye = tableEmployes.getSelectionModel().getSelectedItem();
+
     if (selectedEmploye != null){
+
         // System.out.println("Voici l'élément selectionner "+ "Id : " + selectedDepartement.getId()+ "\nnom : " + selectedDepartement.getNom());
         // recupération des données dans le tableview
         String id = selectedEmploye.getId();
@@ -226,6 +291,20 @@ private void preparModificationDepartement(){
         String date = String.valueOf(selectedEmploye.getDateEmbauche());
         String poste = selectedEmploye.getPoste();
         String departement = selectedEmploye.getDepartement();
+
+        String imagePath = null; // Variable pour stocker le chemin de l'image
+        String sql_image = "SELECT img FROM employe WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql_image)) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    imagePath = rs.getString("img"); // Récupère le chemin de l'image
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'image : " + e.getMessage());
+        }
         // completer les formulaires avec les données récuperer
         txtEmployeeId.setText(id);
         txtNom.setText(nom);
@@ -236,6 +315,30 @@ private void preparModificationDepartement(){
         comboDepartement.setValue(departement);
         comboPoste.setValue(poste);
         txtAdresse.setText(adresse);
+        // Afficher l'image dans le ImageView
+        if (imagePath != null && !imagePath.isEmpty()) {
+            try {
+                File file = new File(imagePath); // Le chemin doit être absolu ou relatif correct
+
+                if (file.exists()) {
+                    // L'image existe, on l'affiche
+                    Image image = new Image(file.toURI().toString());
+                    imageView.setImage(image);
+                } else {
+                    // L'image n'existe pas, on charge une image par défaut
+                    System.out.println("Fichier image non trouvé : " + imagePath);
+                    chargerImageParDefaut();
+                }
+            } catch (Exception e) {
+                // En cas d'erreur (ex: chemin invalide), on affiche l'image par défaut
+                e.printStackTrace();
+                chargerImageParDefaut();
+            }
+        } else {
+            // Aucun chemin fourni, on affiche l'image par défaut
+            chargerImageParDefaut();
+        }
+
     }else{
         JOptionPane.showConfirmDialog(
                 null,
@@ -380,24 +483,54 @@ public void supprimerEmploye(ActionEvent actionEvent) {
 }
     @FXML
     private void viderChamps() {
-        txtEmployeeId.clear();
-        txtNom.clear();
-        txtPrenom.clear();
-        txtEmail.clear();
-        txtTelephone.clear();
-        dateEmbauche.setValue(null);
-        txtAdresse.clear();
-        comboDepartement.getSelectionModel().clearSelection();
-        comboDepartement.getEditor().clear();
-        comboPoste.getSelectionModel().clearSelection();
-        comboPoste.getEditor().clear();
-
+            btnViderChamps.setDisable(false);
+            txtEmployeeId.clear();
+            txtNom.clear();
+            txtPrenom.clear();
+            txtEmail.clear();
+            txtTelephone.clear();
+            dateEmbauche.setValue(null);
+            txtAdresse.clear();
+            comboDepartement.getSelectionModel().clearSelection();
+            comboDepartement.getEditor().clear();
+            comboPoste.getSelectionModel().clearSelection();
+            comboPoste.getEditor().clear();
         selectedEmployee = null;
         tableEmployes.getSelectionModel().clearSelection();
 
         updateStatut("Champs vidés");
     }
+    private void ajouterListeners() {
+        // Écouteurs pour les TextField
+        txtNom.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtPrenom.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtTelephone.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtEmail.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtAdresse.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtEmployeeId.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
 
+        // Écouteurs pour les ComboBox
+        comboDepartement.valueProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        comboPoste.valueProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+
+        // Écouteur pour la date
+        dateEmbauche.valueProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+    }
+
+    private void activerBtnVider() {
+        boolean auMoinsUnRempli =
+                !txtNom.getText().isEmpty() ||
+                        !txtPrenom.getText().isEmpty() ||
+                        !txtTelephone.getText().isEmpty() ||
+                        !txtEmail.getText().isEmpty() ||
+                        !txtAdresse.getText().isEmpty() ||
+                        !txtEmployeeId.getText().isEmpty() ||
+                        comboDepartement.getValue() != null ||
+                        comboPoste.getValue() != null ||
+                        dateEmbauche.getValue() != null;
+
+        btnViderChamps.setDisable(!auMoinsUnRempli);
+    }
 
     @FXML
     private void actualiserListe() {
@@ -407,56 +540,6 @@ public void supprimerEmploye(ActionEvent actionEvent) {
 
     }
 
-/*
-    @FXML
-    private void rechercherEmploye() {
-        String searchTerm = txtRecherche.getText().trim();
-
-        if (searchTerm.isEmpty()) {
-            loadEmployees();
-            return;
-        }
-
-        try {
-            List<employe> employees = employeDAO.rechercherEmployes(searchTerm);
-          employeeList.clear();
-            employeeList.addAll(employees);
-            updateEmployeeCount();
-            updateStatut("Recherche effectuée: " + employees.size() + " résultat(s)");
-        } catch (Exception e) {
-            showError("Erreur lors de la recherche", e.getMessage());
-        }
-    }
-/*
-    @FXML
-    private void selectionnerEmploye(MouseEvent event) {
-        employe employee = tableEmployes.getSelectionModel().getSelectedItem();
-        if (employee != null) {
-            selectedEmployee = employee;
-            fillFormWithEmployee(employee);
-            updateStatut("Employé sélectionné: " + employee.getPrenom() + " " + employee.getNom());
-        }
-    }
-*//*
-    private void fillFormWithEmployee(employe employee) {
-        txtEmployeeId.setText(employee.getId());
-        txtNom.setText(employee.getNom());
-        txtPrenom.setText(employee.getPrenom());
-        txtEmail.setText(employee.getEmail());
-        txtTelephone.setText(String.valueOf(employee.getTelephone()));
-
-        // Convertir Date vers LocalDate pour le DatePicker
-        if (employee.getDateEmbauche() != null) {
-            dateEmbauche.setValue(new java.sql.Date(employee.getDateEmbauche().getTime()).toLocalDate());
-        }
-
-        txtAdresse.setText(employee.getAdresse());
-
-        // Sélectionner ou saisir le département et le poste
-        comboDepartement.setValue(employee.getDepartement());
-        comboPoste.setValue(employee.getPoste());
-    }
-*/
     private void rechercherEmploye(String motCle) {
         // stocké les listes pour être bien syncronisé
         Connection conn = ConnexionDB.getConnection();
@@ -472,13 +555,13 @@ public void supprimerEmploye(ActionEvent actionEvent) {
 
                 String id = rs.getString("id");
                 String nom = rs.getString("nom");
-                String prenoms  = rs.getString("prenoms");
+                String prenoms = rs.getString("prenoms");
                 int telephone = rs.getInt("telephone");
                 String email = rs.getString("email");
                 String addresse = rs.getString("adresse");
-                java.sql.Date date = rs.getDate("date_embauche"); // type java.sql.Date
+                java.sql.Date date = rs.getDate("date_embauche");
                 String departement = rs.getString("departement");
-                String poste = rs.getString("ID_POSTE");
+                String poste = rs.getString("id_poste");
 
                 employe emp = new employe(id , nom , prenoms , telephone , email , addresse , date , departement, poste );
                 listeFiltrée.add(emp);
