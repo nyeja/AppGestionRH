@@ -12,12 +12,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard/dashboard.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/poste/poste.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/employe/employe.fxml"));
+        //Parent root = FXMLLoader.load(getClass().("/fxml/employe/employe.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/departement/dpm.fxml"));
         primaryStage.setScene(new Scene(root));
         // Changer le logo de l'application
-        // primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("D:/Local Disk D_112020241629/Etude/L3/projet/projet tuto 24-25/AppGestionRH/")));
+        // primaryStage.getIcons().add(new Image(getClass().getgetResourceResourceAsStream("D:/Local Disk D_112020241629/Etude/L3/projet/projet tuto 24-25/AppGestionRH/")));
 
         primaryStage.setTitle("Département/dashboard");
         primaryStage.show();

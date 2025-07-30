@@ -14,14 +14,14 @@ public class employe {
     private String poste;
     private String motDePasse;
     private String image; // peut contenir un chemin ou juste le nom de fichier
-
+    private String role;
     // Constructeur par défaut
     public employe() {}
 
     // Constructeur avec tous les arguments
     public employe(String id, String nom, String prenom, int telephone, String email,
                    String adresse, Date dateEmbauche, String departement, String poste,
-                   String motDePasse, String image) {
+                   String motDePasse, String image , String role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -33,12 +33,12 @@ public class employe {
         this.poste = poste;
         this.motDePasse = motDePasse;
         this.image = image;
+        this.role = role;
     }
 
     // constructeur sans img et mot de pass
-    // Constructeur avec tous les arguments
     public employe(String id, String nom, String prenom, int telephone, String email,
-                   String adresse, Date dateEmbauche, String departement, String poste) {
+                   String adresse, Date dateEmbauche, String departement, String poste , String role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -48,8 +48,14 @@ public class employe {
         this.dateEmbauche = dateEmbauche;
         this.departement = departement;
         this.poste = poste;
+        this.role = role ;
+    }
+
+    public employe(String id , String nom, String motDePasse, String role) {
+        this.id = id;
+        this.nom = nom;
         this.motDePasse = motDePasse;
-        this.image = image;
+        this.role = role;
     }
 
     // Getters et setters
@@ -86,6 +92,8 @@ public class employe {
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
 
+    public String getRole(){return role; }
+    public void setRole(String role) { this.role = role; }
     @Override
     public String toString() {
         return prenom + " " + nom + " (" + poste + ")";

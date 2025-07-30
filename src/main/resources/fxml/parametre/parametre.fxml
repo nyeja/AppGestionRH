@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane prefHeight="610.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.parametreController">
+   <children>
+      <Pane layoutX="659.0" layoutY="122.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #91C499; -fx-border-radius: 5;" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <Button layoutX="64.0" layoutY="220.0" mnemonicParsing="false" onAction="#loadProfil" style="-fx-background-color: none;" text="Profil utilisateur" textFill="WHITE" />
+            <Button alignment="CENTER" layoutX="27.0" layoutY="259.0" mnemonicParsing="false" onAction="#loadSecurity" prefHeight="17.0" prefWidth="157.0" style="-fx-background-color: none;" text="Sécurité et confidentialité" textFill="WHITE" />
+            <Button layoutX="21.0" layoutY="299.0" mnemonicParsing="false" style="-fx-background-color: none;" text="Exporter la base de données RH" textFill="WHITE" />
+         </children>
+      </Pane>
+      <StackPane fx:id="StackpaneMain" layoutX="32.0" layoutY="30.0" prefHeight="550.0" prefWidth="717.0" style="-fx-background-color: grey;" />
+   </children>
+</AnchorPane>

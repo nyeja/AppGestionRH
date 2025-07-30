@@ -1,10 +1,14 @@
 package rh.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
 
 import java.io.IOException;
 
@@ -76,6 +80,29 @@ public class dashboardController {
     private void loadPresence() throws IOException{
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
+    }
+
+    @FXML
+    private void loadParametre() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/parametre/parametre.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+
+    @FXML
+    private void deconnexion(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/Login.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Connexion");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Fermer la fenêtre actuelle
+            ((Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

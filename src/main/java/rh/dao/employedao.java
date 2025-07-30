@@ -3,12 +3,13 @@ package rh.dao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import rh.model.Employer;
 import rh.model.employe.employe;
 import rh.utils.ConnexionDB;
 import javafx.scene.control.*;
-
 import java.sql.*;
-import java.time.LocalDate;
+
 
 public class employedao {
     // Champs du formulaire
@@ -21,6 +22,7 @@ public class employedao {
     @FXML private TextField txtAdresse;
     @FXML private ComboBox<String> comboDepartement;
     @FXML private ComboBox<String> comboPoste;
+    @FXML private Image imageView;
     @FXML
     private TableView<employe> tableEmployes;
     public String getNextEmployeId() throws SQLException {
@@ -35,9 +37,32 @@ public class employedao {
             }
         }
     }
+    public static employe trouverParUsername(String username) {
+        String sql = "SELECT * FROM employe WHERE nom = ?";
+        try (Connection conn = ConnexionDB.getConnection() ;
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new employe(
+                        rs.getString("id"),
+                        rs.getString("nom"),
+                        rs.getString("mdp"),
+                        rs.getString("role")
+                );
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // utilisateur non trouvé
+    }
     public void ajouterEmploye(employe Employe) throws SQLException {
-        String sql = "INSERT INTO employe (nom, prenoms, telephone, email, adresse, date_embauche , departement , id_poste ) VALUES (?, ?, ?, ?, ?, ? , ? , ?)";
+        String sql = "INSERT INTO employe (nom, prenoms, telephone, email, adresse, date_embauche , departement , id_poste , img , mdp , role) VALUES ( ? , ? , ? , ?, ?, ?, ? , ? , ? , ? , ? )";
         Connection conn = ConnexionDB.getConnection();
         if (conn == null || conn.isClosed()) {
             System.out.println("Connexion fermée ou nulle !");
@@ -54,7 +79,9 @@ public class employedao {
             ps.setDate(6, new java.sql.Date(Employe.getDateEmbauche().getTime()));
             ps.setString(7, Employe.getDepartement());
             ps.setString(8, Employe.getPoste());
-
+            ps.setString(9,Employe.getImage());
+            ps.setString(10,Employe.getMotDePasse());
+            ps.setString(11,Employe.getRole());
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -120,11 +147,12 @@ public class employedao {
                 Date date = rs.getDate("date_embauche");
                 String departement = rs.getString("departement");
                 String poste = rs.getString("id_poste");
+                String role = rs.getString("role");
 
                 // Ajout de l'objet employe avec tous les paramètres
                 listEmploye.add(new employe(
                         id, nom, prenoms, telephone, email, adresse, date,
-                        departement, poste ));
+                        departement, poste ,role ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,7 +179,8 @@ public class employedao {
                             rs.getString("departement"),
                             rs.getString("id_poste"),
                             rs.getString("type_contrat"),
-                            rs.getString("img")
+                            rs.getString("img"),
+                            rs.getString("role")
                     );
                 }
             }
@@ -159,38 +188,4 @@ public class employedao {
         return null;
     }
 
-//    public List<employe> rechercherEmployes(String critere) {
-//        List<employe> liste = new ArrayList<>();
-//        String sql = "SELECT * FROM employe WHERE UPPER(nom) LIKE ? OR UPPER(prenoms) LIKE ? OR UPPER(email) LIKE ? OR UPPER(departement) LIKE ? OR UPPER(poste) LIKE ? ORDER BY nom, prenoms";
-//        try (Connection conn = ConnexionDB.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//            String searchPattern = "%" + critere.toUpperCase() + "%";
-//            ps.setString(1, searchPattern);
-//            ps.setString(2, searchPattern);
-//            ps.setString(3, searchPattern);
-//            ps.setString(4, searchPattern);
-//            ps.setString(5, searchPattern);
-//
-//            try (ResultSet rs = ps.executeQuery()) {
-//                while (rs.next()) {
-//                    employe e = new employe(
-//                            rs.getString("id"),
-//                            rs.getString("nom"),
-//                            rs.getString("prenoms"),
-//                            rs.getInt("telephone"),
-//                            rs.getString("email"),
-//                            rs.getString("adresse"),
-//                            rs.getDate("date_embauche")
-////                            rs.getString("departement"),
-////                            rs.getString("poste")
-//                    );
-//                    liste.add(e);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return liste;
-//    }
 }

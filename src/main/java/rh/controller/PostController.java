@@ -12,6 +12,7 @@ import rh.model.poste.Poste;
 import java.sql.*;
 import java.util.Optional;
 
+
 public class PostController {
 
     @FXML private TextField txtNom;
@@ -28,6 +29,7 @@ public class PostController {
     @FXML private Button btnModifier;
     @FXML private Button btnSupprimer;
     @FXML private Button btnValider;
+    @FXML private Button btnViderchamps;
 
     private ObservableList<Poste> posteList = FXCollections.observableArrayList();
     private ObservableList<Departement> departementList = FXCollections.observableArrayList();
@@ -44,6 +46,7 @@ public class PostController {
         setupListeners();
         loadData();
         setupSearchFilter();
+        ajouterListeners();
     }
     private void configureTableColumns() {
         colIdPoste.setCellValueFactory(cellData -> cellData.getValue().idProperty());
@@ -185,6 +188,7 @@ public class PostController {
         btnAjouter.setDisable(true);
         btnModifier.setDisable(true);
         btnValider.setDisable(false);
+        btnViderchamps.setDisable(false);
     }
 
     @FXML
@@ -195,7 +199,6 @@ public class PostController {
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             Departement dep = choiceDepartement.getValue();
 
             stmt.setString(1, txtNom.getText().trim());
@@ -208,6 +211,8 @@ public class PostController {
                 showAlert("Succès", "Poste modifié avec succès");
                 resetForm();
                 loadPostes();
+                btnValider.setDisable(true);
+                btnViderchamps.setDisable(true);
             }
         } catch (SQLException e) {
             showDatabaseError("Erreur modification poste", e);
@@ -275,5 +280,32 @@ public class PostController {
         alert.setContentText("Erreur: " + e.getMessage());
         alert.showAndWait();
         e.printStackTrace();
+    }
+
+    public void viderChamps(){
+        int zero = 0 ;
+        txtNom.clear();
+        txtLocalisation.clear();
+        choiceDepartement.setValue(null);
+        btnViderchamps.setDisable(true);
+        btnValider.setDisable(true);
+        btnAjouter.setDisable(false);
+    }
+
+    private void ajouterListeners() {
+        // Écouteurs pour les TextField
+        txtNom.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        txtLocalisation.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        // Écouteurs pour les ComboBox
+        choiceDepartement.valueProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+
+    }
+    private void activerBtnVider() {
+        boolean auMoinsUnRempli =
+                !txtNom.getText().isEmpty() ||
+                !txtLocalisation.getText().isEmpty() ||
+                choiceDepartement.getValue() != null ;
+
+        btnViderchamps.setDisable(!auMoinsUnRempli);
     }
 }

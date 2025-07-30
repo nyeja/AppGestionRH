@@ -1,5 +1,5 @@
 package rh.controller;
-
+import rh.model.session.userConnecter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,7 +15,9 @@ import javafx.fxml.FXMLLoader;
 
 
 import rh.dao.EmployerDAO;
-import rh.model.Employer;
+import rh.dao.employedao;
+//import rh.model.Employer;
+import rh.model.employe.employe;
 
 public class LoginController {
     @FXML
@@ -35,7 +37,7 @@ public class LoginController {
         System.out.println("roleChoiceBox est null ? " + (roleChoiceBox == null));
 
         if (roleChoiceBox != null) {
-            roleChoiceBox.getItems().addAll("RH", "Employer");
+            roleChoiceBox.getItems().addAll("Admin", "Employer");
             roleChoiceBox.setValue("Employer");
         } else {
             System.err.println("ERREUR: roleChoiceBox n'a pas été injecté par FXMLLoader !");
@@ -52,19 +54,18 @@ private void handleLogin(ActionEvent event) {
 
     System.out.println("Saisie utilisateur : " + username + ", " + password + ", " + role);
 
-    EmployerDAO employerDAO = new EmployerDAO();
-    Employer user = employerDAO.trouverParUsername(username);
-
+    employe user = employedao.trouverParUsername(username);
     if (user != null) {
-        System.out.println("Utilisateur DB : " + user.getUsername() + ", " + user.getPassword() + ", " + user.getRole());
+        System.out.println("Utilisateur DB : " + user.getNom() + ", " + user.getMotDePasse() +" "+ user.getId() +", " + user.getRole());
     } else {
         System.out.println("Aucun utilisateur trouvé avec ce username.");
     }
 
-    if (user != null && user.getUsername().equals(username)
-            && user.getPassword().equals(password)
+    if (user != null && user.getNom().equals(username)
+            && user.getMotDePasse().equals(password)
             && user.getRole().equalsIgnoreCase(role)) {
-
+        userConnecter.setUser(user.getNom(), user.getRole());
+        userConnecter.setUser(user.getId());
         saveRememberedCredentials();
         AllertMessage.setVisible(false);
         openInterface(role);
@@ -91,10 +92,10 @@ private void handleLogin(ActionEvent event) {
     try {
         String fxmlPath = "";
 
-        if (role.equalsIgnoreCase("RH")) {
-            fxmlPath = "/fxml/RH/RH.fxml";
+        if (role.equalsIgnoreCase("Admin")) {
+            fxmlPath = "/fxml/dashboard/dashboard.fxml";
         } else if (role.equalsIgnoreCase("Employer")) {
-            fxmlPath = "/fxml/Employer/Employer.fxml"; // à créer plus tard si besoin
+            fxmlPath = "/fxml/Employe/Employe.fxml"; // à créer plus tard si besoin
         }
        if (!fxmlPath.isEmpty()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

@@ -39,7 +39,13 @@ public class departementController {
     private Button btnValider;
 
     @FXML
+    private Button btnviderChamps;
+
+    @FXML
     private Button btnSupprimer;
+
+    @FXML
+    private  Button btnAnnulerModification;
 
     @FXML
     private Button modifValider;
@@ -97,6 +103,7 @@ public class departementController {
         tfRechercher.textProperty().addListener((observable, oldValue, newValue) -> {
             rechercherDepartement(newValue);
         });
+        ajouterListeners();
         // Mettre le boutton valider invisible
         try {
            // Liaison des colonnes aux propriétés de la classe tableauDepartement
@@ -221,7 +228,12 @@ public class departementController {
         // Selectionner les données dans le tableau
         tableauDepartement selectedDepartement = tableDepartement.getSelectionModel().getSelectedItem();
         if (selectedDepartement != null){
+            modifValider.setDisable(false);
+            btnviderChamps.setDisable(false);
+            btnAnnulerModification.setDisable(false);
+            btnValider.setDisable(true);
             tfNombreEmployer.setDisable(false);
+
             // System.out.println("Voici l'élément selectionner "+ "Id : " + selectedDepartement.getId()+ "\nnom : " + selectedDepartement.getNom());
             // recupération des données dans le tableview
             String nom = selectedDepartement.getNom();
@@ -272,7 +284,10 @@ public class departementController {
             // execution de la modification
             int ligneModifier = stmt.executeUpdate();
             if (ligneModifier > 0){
-                modifValider.setVisible(false);
+                modifValider.setDisable(true);
+                btnviderChamps.setDisable(true);
+                btnAnnulerModification.setDisable(true);
+                btnValider.setDisable(false);
                 tableDepartement.setItems(chargerProduits());
                 tfNom.setText("");
                 tfCode.setText("");
@@ -380,6 +395,34 @@ public class departementController {
         tfDescription.clear();
         tfLocalisation.clear();
         tfNombreEmployer.setText(String.valueOf(zero));
+        btnviderChamps.setDisable(true);
+        modifValider.setDisable(true);
+        btnValider.setDisable(false);
+        btnAnnulerModification.setDisable(true);
+        tableDepartement.setItems(chargerProduits());
+
+    }
+    private void ajouterListeners() {
+        // Écouteurs pour les TextField
+        tfNom.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        tfCode.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        tfLocalisation.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        tfDescription.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        tfNombreEmployer.textProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+        // Écouteurs pour les ComboBox
+        cbResponsable.valueProperty().addListener((obs, oldVal, newVal) -> activerBtnVider());
+
+    }
+    private void activerBtnVider() {
+        boolean auMoinsUnRempli =
+                !tfNom.getText().isEmpty() ||
+                !tfCode.getText().isEmpty() ||
+                !tfLocalisation.getText().isEmpty() ||
+                !tfDescription.getText().isEmpty() ||
+                !tfNombreEmployer.getText().isEmpty() ||
+                cbResponsable.getValue() != null ;
+
+        btnviderChamps.setDisable(!auMoinsUnRempli);
     }
 
 }

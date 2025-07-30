@@ -73,7 +73,7 @@
                </font>
             </Label>
             <PasswordField fx:id="passwordField" layoutX="139.0" layoutY="118.0" prefHeight="32.0" prefWidth="188.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="23.0" />
-            <Button fx:id="LoginId" alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="32.0" prefWidth="296.0" styleClass="LoginId" text="Login" textAlignment="CENTER" textFill="#ebe4e4">
+            <Button fx:id="LoginId" alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="32.0" prefWidth="296.0" style="-fx-background-color: #06106b;" styleClass="LoginId" text="Login" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Arimo SemiBold" size="15.0" />
                </font>
