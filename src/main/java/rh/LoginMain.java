@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class    LoginMain extends Application {
-    
+    //OK
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Charge le FXML depuis le bon chemin
