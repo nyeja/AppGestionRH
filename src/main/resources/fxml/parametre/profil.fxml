@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.parametreController">
+<AnchorPane prefHeight="550.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.parametre.profile">
     <Pane layoutX="38.0" layoutY="29.0" prefHeight="550.0" prefWidth="707.0">
         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="102.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageViewProfile" fitHeight="150.0" fitWidth="200.0" layoutX="102.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../../img/avotra_img1753432200000.png" />
                 </image>

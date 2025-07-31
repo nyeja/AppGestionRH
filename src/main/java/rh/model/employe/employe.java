@@ -58,6 +58,10 @@ public class employe {
         this.role = role;
     }
 
+    public employe(String motDePasse){
+        this.motDePasse = motDePasse;
+    }
+
     // Getters et setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

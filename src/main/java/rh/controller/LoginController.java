@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.*;
+import java.sql.SQLException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,21 +49,21 @@ public class LoginController {
     }
 
     @FXML
-private void handleLogin(ActionEvent event) {
-    String username = usernameField.getText();
+private void handleLogin(ActionEvent event) throws SQLException {
+    String userID = usernameField.getText();
     String password = passwordField.getText();
     String role = roleChoiceBox.getValue();
 
-    System.out.println("Saisie utilisateur : " + username + ", " + password + ", " + role);
+    System.out.println("Saisie utilisateur : " + userID + ", " + password + ", " + role);
 
-    employe user = employedao.trouverParUsername(username);
+    employe user = employedao.getEmployeById(userID);
     if (user != null) {
         System.out.println("Utilisateur DB : " + user.getNom() + ", " + user.getMotDePasse() +" "+ user.getId() +", " + user.getRole());
     } else {
         System.out.println("Aucun utilisateur trouvé avec ce username.");
     }
 
-    if (user != null && user.getNom().equals(username)
+    if (user != null && user.getId().equals(userID)
             && user.getMotDePasse().equals(password)
             && user.getRole().equalsIgnoreCase(role)) {
         userConnecter.setUser(user.getNom(), user.getRole());
@@ -95,7 +97,7 @@ private void handleLogin(ActionEvent event) {
         if (role.equalsIgnoreCase("Admin")) {
             fxmlPath = "/fxml/dashboard/dashboard.fxml";
         } else if (role.equalsIgnoreCase("Employer")) {
-            fxmlPath = "/fxml/Employe/Employe.fxml"; // à créer plus tard si besoin
+            fxmlPath = "/fxml/dashboard/dashboard.fxml"; // à créer plus tard si besoin
         }
        if (!fxmlPath.isEmpty()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

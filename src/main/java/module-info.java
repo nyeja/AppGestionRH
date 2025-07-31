@@ -23,4 +23,5 @@ module rh {
     exports rh.model.employe;
     exports rh.dao;
     exports rh;
+    opens rh.controller.parametre to javafx.fxml;
 }

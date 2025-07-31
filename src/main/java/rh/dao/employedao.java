@@ -61,6 +61,28 @@ public class employedao {
 
         return null; // utilisateur non trouvé
     }
+    public static employe getEmployeById(String id) throws SQLException {
+        String sql = "SELECT * FROM employe WHERE id=?";
+        try (Connection conn = ConnexionDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new employe(
+                            rs.getString("id"),
+                            rs.getString("nom"),
+                            rs.getString("mdp"),
+                            rs.getString("role")
+                    );
+
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void ajouterEmploye(employe Employe) throws SQLException {
         String sql = "INSERT INTO employe (nom, prenoms, telephone, email, adresse, date_embauche , departement , id_poste , img , mdp , role) VALUES ( ? , ? , ? , ?, ?, ?, ? , ? , ? , ? , ? )";
         Connection conn = ConnexionDB.getConnection();
@@ -160,32 +182,6 @@ public class employedao {
         return listEmploye;
     }
 
-    public employe getEmployeById(String id) throws SQLException {
-        String sql = "SELECT * FROM employe WHERE id=?";
-        try (Connection conn = ConnexionDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new employe(
-                            rs.getString("id"),
-                            rs.getString("nom"),
-                            rs.getString("prenoms"),
-                            rs.getInt("telephone"),
-                            rs.getString("email"),
-                            rs.getString("adresse"),
-                            rs.getDate("date_embauche"),
-                            rs.getString("departement"),
-                            rs.getString("id_poste"),
-                            rs.getString("type_contrat"),
-                            rs.getString("img"),
-                            rs.getString("role")
-                    );
-                }
-            }
-        }
-        return null;
-    }
 
 }
