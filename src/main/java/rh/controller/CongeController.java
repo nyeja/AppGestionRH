@@ -2,12 +2,7 @@ package rh.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +15,18 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+/**
+ * Contrôleur FXML pour la gestion des demandes de congé.
+ * Cette classe gère l'interface utilisateur pour soumettre, annuler et valider les demandes de congé.
+ * Elle interagit avec le DAO pour persister les données en base de données.
+ *
+ * @author Rajerisoa Ny Eja Manoa
+ * @version 1.0
+ * @since 2025-08-12
+ */
 public class CongeController implements Initializable {
+
+    // --- Composants FXML ---
     @FXML private DatePicker DebutDateConge;
     @FXML private DatePicker FinDateConge;
     @FXML private ComboBox<String> TypeConge;
@@ -30,20 +36,28 @@ public class CongeController implements Initializable {
     @FXML private Label lblEmployeMatricule;
     @FXML private Label messageStatut;
 
+    // --- Dépendances et variables d'état ---
     private congedao congeDAO;
-    private String matriculeEmployeConnecte; //Variable pour stocker le matricule de l'employé
+    private String matriculeEmployeConnecte;
 
+    /**
+     * Initialise le contrôleur après le chargement du fichier FXML.
+     * Cette méthode configure les éléments de l'UI et prépare les dépendances.
+     *
+     * @param url L'emplacement utilisé pour résoudre les chemins relatifs pour l'objet racine.
+     * @param resourceBundle Le ResourceBundle qui gère les textes localisés.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         congeDAO = new congedao();
 
-
+        // Remplir le ComboBox avec les types de congé disponibles.
         ObservableList<String> types = FXCollections.observableArrayList(
                 "Annuel", "Maladie", "Maternite", "Exceptionnel"
         );
         TypeConge.setItems(types);
 
-
+        // Désactiver les boutons de soumission initialement, ils seront activés après la connexion de l'employé.
         EnvoyerBtn.setDisable(true);
         AnnulerBtn.setDisable(true);
 
@@ -51,8 +65,10 @@ public class CongeController implements Initializable {
     }
 
     /**
-     * Method called by LoginController to pass the connected employee's matricule.
-     * @param matriculeEmploye The matricule of the employee who just logged in.
+     * Méthode appelée pour définir le matricule de l'employé connecté.
+     * Cette méthode est typiquement invoquée par un autre contrôleur (ex: LoginController).
+     *
+     * @param matriculeEmploye Le matricule de l'employé connecté.
      */
     public void setEmployeMatricule(String matriculeEmploye) {
         this.matriculeEmployeConnecte = matriculeEmploye;
@@ -62,11 +78,19 @@ public class CongeController implements Initializable {
             lblEmployeMatricule.setText("Matricule Employé: " + this.matriculeEmployeConnecte);
         }
 
-        // Enable buttons once the employee is identified
+        // Activer les boutons une fois que le matricule de l'employé est défini.
         EnvoyerBtn.setDisable(false);
         AnnulerBtn.setDisable(false);
     }
 
+    // --- Gestionnaire d'événements FXML ---
+
+    /**
+     * Gère l'événement de clic sur le bouton "Envoyer".
+     * Valide le formulaire et, en cas de succès, soumet la demande de congé à la base de données.
+     *
+     * @param event L'événement d'action.
+     */
     @FXML
     private void handleEnvoyerDemande(ActionEvent event) {
         if (!validateForm()) {
@@ -75,14 +99,13 @@ public class CongeController implements Initializable {
 
         try {
             Conge nouvelleDemande = new Conge();
-
             nouvelleDemande.setIdConge(generateCongeId());
             nouvelleDemande.setMatriculeEmploye(this.matriculeEmployeConnecte);
             nouvelleDemande.setDateDebut(DebutDateConge.getValue());
             nouvelleDemande.setDateFin(FinDateConge.getValue());
             nouvelleDemande.setTypeConge(TypeConge.getValue());
             nouvelleDemande.setJustificatif(JustificatifField.getText().trim());
-            nouvelleDemande.setStatut("En attente"); // Initial status
+            nouvelleDemande.setStatut("En attente"); // Statut initial
 
             congeDAO.ajouterConge(nouvelleDemande);
             showSuccess("Demande de congé soumise avec succès ! ID: " + nouvelleDemande.getIdConge());
@@ -96,29 +119,43 @@ public class CongeController implements Initializable {
         }
     }
 
+    /**
+     * Gère l'événement de clic sur le bouton "Annuler".
+     * Réinitialise les champs du formulaire.
+     *
+     * @param event L'événement d'action.
+     */
     @FXML
     private void handleAnnulerDemande(ActionEvent event) {
         clearForm();
         updateStatus("Formulaire de demande de congé annulé.");
     }
 
+    // --- Méthodes utilitaires ---
+
+    /**
+     * Valide les données saisies dans le formulaire.
+     *
+     * @return {@code true} si le formulaire est valide, sinon {@code false}.
+     */
     private boolean validateForm() {
         StringBuilder errors = new StringBuilder();
 
-        if (DebutDateConge.getValue() == null) {
+        LocalDate debut = DebutDateConge.getValue();
+        LocalDate fin = FinDateConge.getValue();
+
+        if (debut == null) {
             errors.append("- La date de début est obligatoire.\n");
         }
-        if (FinDateConge.getValue() == null) {
+        if (fin == null) {
             errors.append("- La date de fin est obligatoire.\n");
         }
-        if (DebutDateConge.getValue() != null && FinDateConge.getValue() != null &&
-                DebutDateConge.getValue().isAfter(FinDateConge.getValue())) {
+        if (debut != null && fin != null && debut.isAfter(fin)) {
             errors.append("- La date de début ne peut pas être après la date de fin.\n");
         }
         if (TypeConge.getValue() == null || TypeConge.getValue().isEmpty()) {
             errors.append("- Le type de congé est obligatoire.\n");
         }
-
 
         if (errors.length() > 0) {
             showWarning("Validation échouée", errors.toString());
@@ -127,6 +164,9 @@ public class CongeController implements Initializable {
         return true;
     }
 
+    /**
+     * Efface tous les champs du formulaire.
+     */
     private void clearForm() {
         DebutDateConge.setValue(null);
         FinDateConge.setValue(null);
@@ -135,25 +175,34 @@ public class CongeController implements Initializable {
         updateStatus("Champs vidés.");
     }
 
-
+    /**
+     * Génère un identifiant unique pour une demande de congé.
+     * Utilise une partie du timestamp du système pour créer un ID simple.
+     *
+     * @return Une chaîne de caractères représentant l'identifiant du congé.
+     */
     private String generateCongeId() {
-        // Utilise une partie du timestamp et un préfixe plus court
-        // Par exemple, les 5 derniers chiffres du timestamp + un préfixe de 4 caractères
         String timestampPart = String.valueOf(System.currentTimeMillis());
-        // Prend les 5 derniers chiffres pour garder l'ID court
         timestampPart = timestampPart.substring(Math.max(0, timestampPart.length() - 5));
-
-        // Préfixe de 4 caractères max, par exemple "CGE-"
-        return "CGE-" + timestampPart; // Ex: "CGE-12345" (longueur 9)
+        return "CGE-" + timestampPart;
     }
 
-
+    /**
+     * Met à jour le message de statut affiché à l'utilisateur.
+     *
+     * @param message Le message à afficher.
+     */
     private void updateStatus(String message) {
-        if (messageStatut != null) { // Add null check for messageStatut in initialize too
+        if (messageStatut != null) {
             messageStatut.setText(message);
         }
     }
 
+    /**
+     * Affiche une boîte de dialogue de type Succès.
+     *
+     * @param message Le message à afficher dans la boîte de dialogue.
+     */
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
@@ -163,6 +212,12 @@ public class CongeController implements Initializable {
         updateStatus(message);
     }
 
+    /**
+     * Affiche une boîte de dialogue de type Erreur.
+     *
+     * @param title Le titre de la boîte de dialogue.
+     * @param message Le message à afficher.
+     */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -172,6 +227,12 @@ public class CongeController implements Initializable {
         updateStatus("Erreur: " + title);
     }
 
+    /**
+     * Affiche une boîte de dialogue de type Avertissement.
+     *
+     * @param title Le titre de la boîte de dialogue.
+     * @param message Le message à afficher.
+     */
     private void showWarning(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Attention");
