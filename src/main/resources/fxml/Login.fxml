@@ -14,11 +14,12 @@
             <Font name="Times New Roman" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="167.0" layoutY="97.0" text="UserName" />
-      <Label layoutX="167.0" layoutY="151.0" text="Password" />
-      <TextField fx:id="usernameField" layoutX="311.0" layoutY="93.0" />
+      <Label layoutX="167.0" layoutY="97.0" text="Email" />
+      <Label layoutX="167.0" layoutY="151.0" text="Mot de passe" />
+      <TextField fx:id="emailField" layoutX="311.0" layoutY="93.0" />
       <Button fx:id="SeconnecterBtn" layoutX="258.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleLogin" text="Se connecter " />
       <PasswordField fx:id="passwordField" layoutX="312.0" layoutY="147.0" />
       <Label fx:id="messageLabel" layoutX="167.0" layoutY="298.0" text="Label" />
+      <Button layoutX="436.0" layoutY="294.0" mnemonicParsing="false" text="Créer un utilisateur"  onAction="#handleCreateUserRedirect"/>
    </children>
 </AnchorPane>

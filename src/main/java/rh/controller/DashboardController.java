@@ -25,9 +25,7 @@ import java.util.ResourceBundle;
  */
 public class DashboardController implements Initializable {
 
-    /**
-     * Le StackPane qui sert de conteneur pour afficher les différentes vues.
-     */
+
     @FXML
     private StackPane contentArea;
 
@@ -37,14 +35,14 @@ public class DashboardController implements Initializable {
     private String connectedEmployeMatricule;
 
     /**
-     * Définit le matricule de l'employé connecté. Cette méthode est appelée par le contrôleur de connexion.
+     * Définit le matricule de l'employé connecté. Cette méthode est appelée par LoginController.
      *
      * @param matricule Le matricule de l'employé.
      */
     public void setConnectedEmployeMatricule(String matricule) {
         this.connectedEmployeMatricule = matricule;
         System.out.println("Dashboard initialisé avec matricule: " + matricule);
-        // Charge la vue de demande de congé par défaut après la connexion.
+        // Charge la vue de demande de congé par défaut après la connexion.Tu peux changer en Dashboard
         loadDemandeConge(null);
     }
 

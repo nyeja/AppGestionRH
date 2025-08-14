@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  * Cette classe permet de visualiser toutes les demandes de congé soumises et d'approuver ou
  * de refuser les demandes sélectionnées.
  *
- * @author Votre Nom
+ * @author Rajerisoa Ny Eja Manoa
  * @version 1.0
  * @since 2025-08-12
  */
@@ -55,11 +55,13 @@ public class RhCongeController implements Initializable {
     private ObservableList<Conge> congeList;
 
     /**
-     * Méthode d'initialisation du contrôleur. Appelée automatiquement après le chargement du fichier FXML.
-     * Configure les colonnes de la TableView, initialise l'écouteur de sélection et charge les données initiales.
+     * Initialise le contrôleur après le chargement de son fichier FXML.
+     * Cette méthode est le point d'entrée pour la configuration de la vue.
+     * Elle initialise le DAO, configure les colonnes du tableau, désactive les boutons d'action
+     * par défaut et charge les demandes de congé existantes.
      *
-     * @param url L'emplacement utilisé pour résoudre les chemins relatifs pour l'objet racine.
-     * @param resourceBundle Le ResourceBundle qui gère les textes localisés.
+     * @param url L'emplacement utilisé pour résoudre les chemins relatifs de l'objet racine.
+     * @param resourceBundle Les ressources spécifiques à la locale.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +100,8 @@ public class RhCongeController implements Initializable {
     // --- Méthodes de gestion des actions FXML ---
 
     /**
-     * Méthode appelée pour rafraîchir la liste des demandes de congé affichées dans la TableView.
+     * Charge toutes les demandes de congé depuis la base de données et met à jour le tableau.
+     * Cette méthode est liée au bouton "Actualiser".
      */
     @FXML
     private void loadCongeRequests() {
@@ -116,7 +119,8 @@ public class RhCongeController implements Initializable {
 
     /**
      * Gère l'événement de clic sur le bouton "Approuver".
-     * Met à jour le statut de la demande de congé sélectionnée à "Approuve".
+     * Récupère la demande de congé sélectionnée, met à jour son statut à "Approuve" dans la base de données,
+     * et rafraîchit le tableau.
      *
      * @param event L'événement d'action.
      */
@@ -141,7 +145,8 @@ public class RhCongeController implements Initializable {
 
     /**
      * Gère l'événement de clic sur le bouton "Refuser".
-     * Met à jour le statut de la demande de congé sélectionnée à "Refuse".
+     * Récupère la demande de congé sélectionnée, met à jour son statut à "Refuse" dans la base de données,
+     * et rafraîchit le tableau.
      *
      * @param event L'événement d'action.
      */
@@ -167,7 +172,7 @@ public class RhCongeController implements Initializable {
     // --- Méthodes utilitaires pour la communication avec l'utilisateur ---
 
     /**
-     * Met à jour le message de statut affiché dans la barre de statut de l'application.
+     * Met à jour le message de statut affiché dans le Label `messageStatutRh`.
      *
      * @param message Le message à afficher.
      */
@@ -178,7 +183,7 @@ public class RhCongeController implements Initializable {
     }
 
     /**
-     * Affiche une boîte de dialogue de type information (succès).
+     * Affiche une boîte de dialogue de type information pour indiquer un succès.
      *
      * @param message Le message à afficher.
      */
@@ -191,7 +196,7 @@ public class RhCongeController implements Initializable {
     }
 
     /**
-     * Affiche une boîte de dialogue de type erreur.
+     * Affiche une boîte de dialogue d'erreur.
      *
      * @param title Le titre de la boîte de dialogue.
      * @param message Le message d'erreur à afficher.
@@ -205,7 +210,7 @@ public class RhCongeController implements Initializable {
     }
 
     /**
-     * Affiche une boîte de dialogue de type avertissement.
+     * Affiche une boîte de dialogue d'avertissement.
      *
      * @param title Le titre de la boîte de dialogue.
      * @param message Le message d'avertissement à afficher.

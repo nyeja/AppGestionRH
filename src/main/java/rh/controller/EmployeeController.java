@@ -2,6 +2,9 @@ package rh.controller;
 
 import rh.dao.Employedao;
 import rh.model.EmployeModel;
+import rh.dao.Utilisateurdao;
+import rh.dao.congedao;
+import rh.utils.ConnexionDB;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +13,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import rh.model.UtilisateurModel;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,13 +66,25 @@ public class EmployeeController implements Initializable {
     @FXML private Label lblNombreEmployes;
 
     // DAO et données
+    private Utilisateurdao utilisateurDAO;
     private Employedao employeDAO;
+    private congedao congeDAO;
+
     private ObservableList<EmployeModel> employeeList;
     private EmployeModel selectedEmployee;
 
+    /**
+     * Initialise le contrôleur. Cette méthode est appelée automatiquement
+     * après le chargement du fichier FXML.
+     * Elle initialise les DAO, les colonnes du tableau, les ComboBox,
+     * charge les employés existants et met à jour le statut.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         employeDAO = new Employedao();
+        utilisateurDAO  = new Utilisateurdao();
+        congeDAO = new congedao();
+
         employeeList = FXCollections.observableArrayList();
 
         initializeTableColumns();
@@ -80,6 +98,12 @@ public class EmployeeController implements Initializable {
         updateStatut("Application initialisée");
     }
 
+    /**
+     * Initialise les colonnes du TableView pour qu'elles affichent les
+     * données de l'objet EmployeModel.
+     * Chaque colonne est liée à une propriété de la classe EmployeModel
+     * via un PropertyValueFactory.
+     */
     private void initializeTableColumns() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -87,8 +111,8 @@ public class EmployeeController implements Initializable {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         colDateEmbauche.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
-//        colDepartement.setCellValueFactory(new PropertyValueFactory<>("departement"));
-//        colPoste.setCellValueFactory(new PropertyValueFactory<>("poste"));
+        colDepartement.setCellValueFactory(new PropertyValueFactory<>("departement"));
+        colPoste.setCellValueFactory(new PropertyValueFactory<>("poste"));
         colAdresse.setCellValueFactory(new PropertyValueFactory<>("adresse"));
 
         // Formater la date dans le tableau
@@ -109,6 +133,11 @@ public class EmployeeController implements Initializable {
         tableEmployes.setItems(employeeList);
     }
 
+    /**
+     * Initialise les ComboBox pour les départements et les postes
+     * avec des listes de valeurs prédéfinies.
+     * Permet également la saisie libre par l'utilisateur.
+     */
     private void initializeComboBoxes() {
         // Départements prédéfinis - vous pouvez les modifier selon vos besoins
         ObservableList<String> departements = FXCollections.observableArrayList(
@@ -143,6 +172,11 @@ public class EmployeeController implements Initializable {
         comboPoste.setEditable(true); // Permet la saisie libre
     }
 
+    /**
+     * Charge la liste des employés depuis la base de données et
+     * l'affiche dans le TableView.
+     * Met à jour le compteur d'employés et le statut.
+     */
     private void loadEmployees() {
         try {
             List<EmployeModel> employees = employeDAO.getAllEmployes();
@@ -156,24 +190,58 @@ public class EmployeeController implements Initializable {
         }
     }
 
+    /**
+     * Gère l'ajout d'un nouvel employé.
+     * Valide les champs du formulaire, crée un objet EmployeModel,
+     * l'insère dans la base de données, et crée automatiquement
+     * un utilisateur associé (comme discuté).
+     */
     @FXML
     private void ajouterEmploye() {
         if (!validateForm()) {
             return;
         }
 
+        Connection conn = null;
         try {
+            // Création de l'objet EmployeModel à partir des champs du formulaire
             EmployeModel employee = createEmployeeFromForm();
+            // L'ajout de l'employé dans la DAO gère également la création de l'utilisateur.
             employeDAO.ajouterEmploye(employee);
-            showSuccess("Employé ajouté avec succès avec l'ID : " + employee.getId());
+
+            showSuccess("Employé et utilisateur créés avec succès pour l'ID : " + employee.getId());
             loadEmployees();
             viderChamps();
         } catch (SQLException e) {
+            // En cas d'erreur, annuler la transaction
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             showError("Erreur lors de l'ajout", e.getMessage());
             e.printStackTrace();
+        } finally {
+            // Réactiver l'auto-commit et fermer la connexion
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
+    /**
+     * Gère la modification d'un employé existant.
+     * S'exécute uniquement si un employé est sélectionné.
+     * Valide les champs, met à jour l'objet EmployeModel,
+     * et envoie la modification à la base de données.
+     */
     @FXML
     private void modifierEmploye() {
         if (selectedEmployee == null) {
@@ -202,6 +270,12 @@ public class EmployeeController implements Initializable {
         loadEmployees();
     }
 
+    /**
+     * Gère la suppression d'un employé sélectionné.
+     * Demande une confirmation à l'utilisateur.
+     * En cas de confirmation, supprime d'abord les congés associés,
+     * puis l'utilisateur, et enfin l'employé.
+     */
     @FXML
     private void supprimerEmploye() {
         if (selectedEmployee == null) {
@@ -218,7 +292,20 @@ public class EmployeeController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                employeDAO.supprimerEmploye(selectedEmployee.getId());
+                // Obtenez l'ID de l'employé sélectionné
+                String employeId = selectedEmployee.getId();
+
+                // Supprimer tous les congés de cet employé
+                congeDAO.supprimerCongesParEmploye(employeId);
+
+                // Supprimer l'utilisateur lié à cet employé
+                utilisateurDAO.supprimerUtilisateur(employeId);
+
+
+                // Enfin, supprimer l'employé de la table principale
+                employeDAO.supprimerEmploye(employeId);
+
+
                 showSuccess("Employé supprimé avec succès");
                 loadEmployees();
                 viderChamps();
@@ -232,6 +319,11 @@ public class EmployeeController implements Initializable {
         }
     }
 
+    /**
+     * Réinitialise tous les champs du formulaire à leur état initial
+     * (vides ou null).
+     * Désactive les boutons de modification et de suppression.
+     */
     @FXML
     private void viderChamps() {
         txtEmployeeId.clear();
@@ -254,36 +346,48 @@ public class EmployeeController implements Initializable {
         updateStatut("Champs vidés");
     }
 
-
+    /**
+     * Recharge la liste des employés.
+     * Cette méthode est liée au bouton "Actualiser".
+     */
     @FXML
     private void actualiserListe() {
-
-            loadEmployees(); // tu peux simplement appeler loadEmployees ici
-
-
+        loadEmployees(); // tu peux simplement appeler loadEmployees ici
     }
 
+    /**
+     * Gère la recherche d'employés.
+     * Filtre la liste des employés affichés dans le TableView
+     * en fonction du terme de recherche saisi.
+     * Si le champ de recherche est vide, recharge tous les employés.
+     */
+    @FXML
+    private void rechercherEmploye() {
+        String searchTerm = txtRecherche.getText().trim();
 
-//    @FXML
-//    private void rechercherEmploye() {
-//        String searchTerm = txtRecherche.getText().trim();
-//
-//        if (searchTerm.isEmpty()) {
-//            loadEmployees();
-//            return;
-//        }
-//
-//        try {
-//            List<employe> employees = employeDAO.rechercherEmployes(searchTerm);
-//            employeeList.clear();
-//            employeeList.addAll(employees);
-//            updateEmployeeCount();
-//            updateStatut("Recherche effectuée: " + employees.size() + " résultat(s)");
-//        } catch (Exception e) {
-//            showError("Erreur lors de la recherche", e.getMessage());
-//        }
-//    }
+        if (searchTerm.isEmpty()) {
+            loadEmployees();
+            return;
+        }
 
+        try {
+            List<EmployeModel> employees = employeDAO.rechercherEmployes(searchTerm);
+            employeeList.clear();
+            employeeList.addAll(employees);
+            updateEmployeeCount();
+            updateStatut("Recherche effectuée: " + employees.size() + " résultat(s)");
+        } catch (Exception e) {
+            showError("Erreur lors de la recherche", e.getMessage());
+        }
+    }
+
+    /**
+     * Gère la sélection d'un employé dans le TableView.
+     * Remplit le formulaire avec les données de l'employé sélectionné
+     * et active les boutons de modification et de suppression.
+     *
+     * @param event L'événement de la souris
+     */
     @FXML
     private void selectionnerEmploye(MouseEvent event) {
         EmployeModel employee = tableEmployes.getSelectionModel().getSelectedItem();
@@ -296,6 +400,12 @@ public class EmployeeController implements Initializable {
         }
     }
 
+    /**
+     * Remplit les champs du formulaire avec les données de l'employé
+     * passé en paramètre.
+     *
+     * @param employee L'employé dont les données doivent être affichées
+     */
     private void fillFormWithEmployee(EmployeModel employee) {
         txtEmployeeId.setText(employee.getId());
         txtNom.setText(employee.getNom());
@@ -315,6 +425,11 @@ public class EmployeeController implements Initializable {
         comboPoste.setValue(employee.getPoste());
     }
 
+    /**
+     * Crée un objet EmployeModel à partir des données saisies dans le formulaire.
+     *
+     * @return Un objet EmployeModel rempli avec les données du formulaire
+     */
     private EmployeModel createEmployeeFromForm() {
         EmployeModel employee = new EmployeModel();
         employee.setNom(txtNom.getText().trim());
@@ -345,6 +460,12 @@ public class EmployeeController implements Initializable {
         return employee;
     }
 
+    /**
+     * Valide les champs du formulaire et affiche des messages d'erreur
+     * si la validation échoue.
+     *
+     * @return true si le formulaire est valide, false sinon
+     */
     private boolean validateForm() {
         StringBuilder errors = new StringBuilder();
 
@@ -402,18 +523,37 @@ public class EmployeeController implements Initializable {
         return true;
     }
 
+    /**
+     * Vérifie la validité d'une adresse email à l'aide d'une expression régulière.
+     *
+     * @param email L'adresse email à valider
+     * @return true si l'email est valide, false sinon
+     */
     private boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
+    /**
+     * Met à jour l'étiquette affichant le nombre total d'employés.
+     */
     private void updateEmployeeCount() {
         lblNombreEmployes.setText("Total: " + employeeList.size() + " employés");
     }
 
+    /**
+     * Met à jour le label de la barre de statut avec un message donné.
+     *
+     * @param message Le message à afficher
+     */
     private void updateStatut(String message) {
         lblStatut.setText(message);
     }
 
+    /**
+     * Affiche une boîte de dialogue d'information de succès.
+     *
+     * @param message Le message de succès
+     */
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
@@ -423,6 +563,12 @@ public class EmployeeController implements Initializable {
         updateStatut(message);
     }
 
+    /**
+     * Affiche une boîte de dialogue d'erreur.
+     *
+     * @param title Le titre de l'erreur
+     * @param message Le message d'erreur
+     */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -432,6 +578,11 @@ public class EmployeeController implements Initializable {
         updateStatut("Erreur: " + title);
     }
 
+    /**
+     * Affiche une boîte de dialogue d'avertissement.
+     *
+     * @param message Le message d'avertissement
+     */
     private void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Attention");
