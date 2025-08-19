@@ -36,8 +36,7 @@ public class LoginController {
      * Elle vérifie les identifiants saisis par l'utilisateur par rapport à la base de données.
      * En cas de succès, elle redirige l'utilisateur vers la vue appropriée en fonction de son rôle.
      * En cas d'échec, elle affiche un message d'erreur.
-     *
-     * @param event L'événement d'action qui a déclenché cette méthode.
+
      */
     @FXML
     public void handleLogin(ActionEvent event) {
@@ -134,11 +133,11 @@ public class LoginController {
         // Logique de redirection
         switch (role.toLowerCase()) {
             case "employe":
-                fxmlFile = "/fxml/Conge.fxml";
+                fxmlFile = "/fxml/EmployeView.fxml";
                 title = "Tableau de bord Employé";
                 break;
             case "rh":
-                fxmlFile = "/fxml/DashboardView.fxml";
+                fxmlFile = "/fxml/RhView.fxml";
                 title = "Tableau de bord Manager";
                 break;
             case "admin":
@@ -146,33 +145,30 @@ public class LoginController {
                 title = "Tableau de bord Admin";
                 break;
             default:
-                fxmlFile = "/fxml/DashboardView.fxml";
+                fxmlFile = "/fxml/RhView.fxml";
                 title = "Tableau de bord";
                 break;
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-        Parent root = loader.load();
+        Parent root = loader.  load();
 
         // Récupérer le contrôleur de la nouvelle scène
         Object controller = loader.getController();
 
         // Si le contrôleur est de type DashboardController ou CongeController, on lui passe le matricule.
-        if (controller instanceof DashboardController) {
-            DashboardController dashboardController = (DashboardController) controller;
-            dashboardController.setConnectedEmployeMatricule(matriculeEmploye);
-        } else if (controller instanceof CongeController) {
-            CongeController congeController = (CongeController) controller;
-            congeController.setEmployeMatricule(matriculeEmploye);
+        if (controller instanceof RhViewController) {
+            RhViewController rhViewController = (RhViewController) controller;
+            rhViewController.setConnectedEmployeMatricule(matriculeEmploye);
+        } else if (controller instanceof EmployeViewController) {
+            EmployeViewController employeViewController = (rh.controller.EmployeViewController) controller;
+            employeViewController.setConnectedEmployeMatricule(matriculeEmploye);
         }
 
-        // Obtenir la scène et la fenêtre actuelle
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        // Créer une nouvelle scène avec la nouvelle vue
         Scene scene = new Scene(root);
 
-        // Mettre à jour la fenêtre
         stage.setScene(scene);
         stage.setTitle(title);
         stage.show();
@@ -188,7 +184,7 @@ public class LoginController {
     @FXML
     public void handleCreateUserRedirect(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserCreationView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserCreation.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);

@@ -1,11 +1,10 @@
 package rh.dao;
 
 import rh.utils.ConnexionDB;
-import rh.model.UtilisateurModel;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
 
 /**
  * Data Access Object (DAO) pour la gestion des utilisateurs.

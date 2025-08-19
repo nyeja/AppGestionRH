@@ -12,6 +12,8 @@ public class Conge {
     private String statut;
     private String nom;
     private String prenoms;
+    private Integer soldeConge;
+    private Integer nbJours;
 
     // Constructor
     public Conge() {}
@@ -44,12 +46,24 @@ public class Conge {
     public String getPrenoms() { return prenoms; }
     public void setPrenoms(String prenoms) { this.prenoms = prenoms; }
 
+    public Integer getSoldeConge(){return soldeConge;}
+
+    public void setSoldeConge(Integer soldeConge) {
+        this.soldeConge = soldeConge;
+    }
+
     //A ne pas effacer, cela permet d'utiliser un nom complet pour la liste des congés
     public String getNomComplet() {
         if (nom != null && prenoms != null) {
             return prenoms + " " + nom;
         }
         return "N/A"; // Retourne une valeur par défaut si les noms sont manquants
+    }
+    public Integer getNbJours() {
+        return nbJours;
+    }
+    public void setNbJours(Integer nbJours) {
+        this.nbJours = nbJours;
     }
 
 

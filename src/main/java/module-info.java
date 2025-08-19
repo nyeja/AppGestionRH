@@ -10,6 +10,7 @@ module com.rhplus.rhplus {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires java.desktop;
 
 
     exports rh;

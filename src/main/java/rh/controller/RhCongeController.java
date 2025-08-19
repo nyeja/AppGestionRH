@@ -12,12 +12,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
 
-import rh.dao.congedao;
+import rh.dao.Congedao;
 import rh.model.Conge;
+import rh.utils.ConnexionDB;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 /**
@@ -41,50 +46,70 @@ public class RhCongeController implements Initializable {
     @FXML private TableColumn<Conge, String> colTypeConge;
     @FXML private TableColumn<Conge, String> colJustificatif;
     @FXML private TableColumn<Conge, String> colStatut;
+    @FXML private TableColumn<Conge, Integer> colSoldeConge;
     @FXML private Button btnApprouver;
     @FXML private Button btnRefuser;
     @FXML private Button btnActualiser;
     @FXML private Label messageStatutRh;
 
     // --- Dépendances et variables d'état ---
-    private congedao congeDAO;
-    /**
-     * Liste observable des congés pour la TableView, permettant de synchroniser les données de l'UI
-     * avec les modifications apportées à la liste.
-     */
+    private Congedao congeDAO;
     private ObservableList<Conge> congeList;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Formatteur de date
 
-    /**
-     * Initialise le contrôleur après le chargement de son fichier FXML.
-     * Cette méthode est le point d'entrée pour la configuration de la vue.
-     * Elle initialise le DAO, configure les colonnes du tableau, désactive les boutons d'action
-     * par défaut et charge les demandes de congé existantes.
-     *
-     * @param url L'emplacement utilisé pour résoudre les chemins relatifs de l'objet racine.
-     * @param resourceBundle Les ressources spécifiques à la locale.
-     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        congeDAO = new congedao();
+        congeDAO = new Congedao();
 
-        // Initialisation des colonnes de la TableView. Chaque colonne est liée à une propriété de l'objet Conge.
+        // Initialisation des colonnes de la TableView.
         colIdConge.setCellValueFactory(new PropertyValueFactory<>("idConge"));
         colMatriculeEmploye.setCellValueFactory(new PropertyValueFactory<>("matriculeEmploye"));
+        // Assurez-vous d'avoir une propriété 'nomComplet' dans votre classe Conge
         colNomComplet.setCellValueFactory(new PropertyValueFactory<>("nomComplet"));
         colDateDebut.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
         colDateFin.setCellValueFactory(new PropertyValueFactory<>("dateFin"));
         colTypeConge.setCellValueFactory(new PropertyValueFactory<>("typeConge"));
         colJustificatif.setCellValueFactory(new PropertyValueFactory<>("justificatif"));
         colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
+        colSoldeConge.setCellValueFactory(new PropertyValueFactory<>("soldeConge")); // Liaison de la nouvelle colonne
+
+        // Configuration de l'affichage des dates
+        colDateDebut.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
+        colDateDebut.setCellFactory(column -> {
+            return new javafx.scene.control.TableCell<Conge, LocalDate>() {
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(dateFormatter.format(item));
+                    }
+                }
+            };
+        });
+
+        colDateFin.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
+        colDateFin.setCellFactory(column -> {
+            return new javafx.scene.control.TableCell<Conge, LocalDate>() {
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(dateFormatter.format(item));
+                    }
+                }
+            };
+        });
 
         congeList = FXCollections.observableArrayList();
         congeTable.setItems(congeList);
 
-        // Désactiver les boutons d'action tant qu'aucune ligne n'est sélectionnée.
         btnApprouver.setDisable(true);
         btnRefuser.setDisable(true);
 
-        // Ajout d'un écouteur pour détecter la sélection d'une ligne dans la TableView.
         congeTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     boolean isSelected = newSelection != null;
@@ -93,21 +118,18 @@ public class RhCongeController implements Initializable {
                 }
         );
 
-        // Charge les demandes de congé au démarrage de l'interface.
         loadCongeRequests();
     }
 
     // --- Méthodes de gestion des actions FXML ---
 
     /**
-     * Charge toutes les demandes de congé depuis la base de données et met à jour le tableau.
-     * Cette méthode est liée au bouton "Actualiser".
-     */
+     * Méthode pour charger les demandes de congés
+     * */
     @FXML
     private void loadCongeRequests() {
         try {
             congeList.clear();
-            // Récupère toutes les demandes de congé de la base de données via le DAO.
             congeList.addAll(congeDAO.getAllConges());
             updateStatus("Demandes de congé chargées avec succès.");
         } catch (SQLException e) {
@@ -118,22 +140,28 @@ public class RhCongeController implements Initializable {
     }
 
     /**
-     * Gère l'événement de clic sur le bouton "Approuver".
-     * Récupère la demande de congé sélectionnée, met à jour son statut à "Approuve" dans la base de données,
-     * et rafraîchit le tableau.
-     *
-     * @param event L'événement d'action.
+     *Méthode pour le changement de statut en approuvé ou refusé
      */
+
     @FXML
     private void handleApprouver(ActionEvent event) {
         Conge selectedConge = congeTable.getSelectionModel().getSelectedItem();
         if (selectedConge != null) {
             try {
+                // 1. Mettre à jour le statut du congé
                 selectedConge.setStatut("Approuve");
                 congeDAO.updateCongeStatut(selectedConge);
+
+                // 2. Calculer la durée du congé
+                long dureeConge = ChronoUnit.DAYS.between(selectedConge.getDateDebut(), selectedConge.getDateFin());
+
+                // 3. Mettre à jour le solde de l'employé
+                mettreAJourSoldeEmploye(selectedConge.getMatriculeEmploye(), (int) dureeConge);
+
                 congeTable.refresh();
                 showSuccess("Demande de congé approuvée pour " + selectedConge.getNomComplet() + " (" + selectedConge.getMatriculeEmploye() + ")");
                 updateStatus("Demande de congé approuvée.");
+
             } catch (SQLException e) {
                 showError("Erreur de base de données", "Impossible d'approuver la demande : " + e.getMessage());
                 e.printStackTrace();
@@ -143,13 +171,6 @@ public class RhCongeController implements Initializable {
         }
     }
 
-    /**
-     * Gère l'événement de clic sur le bouton "Refuser".
-     * Récupère la demande de congé sélectionnée, met à jour son statut à "Refuse" dans la base de données,
-     * et rafraîchit le tableau.
-     *
-     * @param event L'événement d'action.
-     */
     @FXML
     private void handleRefuser(ActionEvent event) {
         Conge selectedConge = congeTable.getSelectionModel().getSelectedItem();
@@ -169,24 +190,33 @@ public class RhCongeController implements Initializable {
         }
     }
 
+    /**
+     * Méthode interne pour mettre à jour le solde de congé d'un employé.
+     * Cette méthode remplace la méthode `validerConge` qui était dans le contrôleur.
+     * @param employeId L'ID de l'employé concerné.
+     * @param dureeConge La durée du congé en jours.
+     */
+    private void mettreAJourSoldeEmploye(String employeId, int dureeConge) throws SQLException {
+        String updateSoldeSql = "UPDATE EMPLOYE SET SOLDE_CONGE = SOLDE_CONGE - ? WHERE id = ?";
+
+        try (Connection conn = ConnexionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateSoldeSql)) {
+
+            pstmt.setInt(1, dureeConge);
+            pstmt.setString(2, employeId);
+            pstmt.executeUpdate();
+            System.out.println("Solde de l'employé " + employeId + " mis à jour. Décrémenté de " + dureeConge + " jours.");
+        }
+    }
+
     // --- Méthodes utilitaires pour la communication avec l'utilisateur ---
 
-    /**
-     * Met à jour le message de statut affiché dans le Label `messageStatutRh`.
-     *
-     * @param message Le message à afficher.
-     */
     private void updateStatus(String message) {
         if (messageStatutRh != null) {
             messageStatutRh.setText(message);
         }
     }
 
-    /**
-     * Affiche une boîte de dialogue de type information pour indiquer un succès.
-     *
-     * @param message Le message à afficher.
-     */
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
@@ -195,12 +225,6 @@ public class RhCongeController implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * Affiche une boîte de dialogue d'erreur.
-     *
-     * @param title Le titre de la boîte de dialogue.
-     * @param message Le message d'erreur à afficher.
-     */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
@@ -209,12 +233,6 @@ public class RhCongeController implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * Affiche une boîte de dialogue d'avertissement.
-     *
-     * @param title Le titre de la boîte de dialogue.
-     * @param message Le message d'avertissement à afficher.
-     */
     private void showWarning(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Attention");

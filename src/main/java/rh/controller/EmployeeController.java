@@ -3,8 +3,7 @@ package rh.controller;
 import rh.dao.Employedao;
 import rh.model.EmployeModel;
 import rh.dao.Utilisateurdao;
-import rh.dao.congedao;
-import rh.utils.ConnexionDB;
+import rh.dao.Congedao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +12,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import rh.model.UtilisateurModel;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,7 +65,7 @@ public class EmployeeController implements Initializable {
     // DAO et données
     private Utilisateurdao utilisateurDAO;
     private Employedao employeDAO;
-    private congedao congeDAO;
+    private Congedao congeDAO;
 
     private ObservableList<EmployeModel> employeeList;
     private EmployeModel selectedEmployee;
@@ -83,7 +80,7 @@ public class EmployeeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         employeDAO = new Employedao();
         utilisateurDAO  = new Utilisateurdao();
-        congeDAO = new congedao();
+        congeDAO = new Congedao();
 
         employeeList = FXCollections.observableArrayList();
 
@@ -352,7 +349,7 @@ public class EmployeeController implements Initializable {
      */
     @FXML
     private void actualiserListe() {
-        loadEmployees(); // tu peux simplement appeler loadEmployees ici
+        loadEmployees();
     }
 
     /**

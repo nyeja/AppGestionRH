@@ -13,8 +13,10 @@ public class EmployeModel {
     private String departement;
     private String poste;
 
+    // Changement : soldeConge est maintenant de type primitif 'int'
+    private int soldeConge;
+
     // Constructeur par défaut
-    //On en a besoin au controller
     public EmployeModel() {}
 
     // Constructeur sans département et poste (pour compatibilité)
@@ -60,5 +62,17 @@ public class EmployeModel {
     @Override
     public String toString() {
         return prenom + " " + nom + " (" + poste + ")";
+    }
+
+    // --- Méthodes corrigées ---
+
+    // La méthode setSoldeConge doit affecter la valeur au champ
+    public void setSoldeConge(int soldeConge) {
+        this.soldeConge = soldeConge;
+    }
+
+    // La méthode getSoldeConge doit retourner le champ
+    public int getSoldeConge() {
+        return this.soldeConge;
     }
 }

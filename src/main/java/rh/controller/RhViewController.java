@@ -23,8 +23,7 @@ import java.util.ResourceBundle;
  * @version 1.0
  * @since 2025-08-12
  */
-public class DashboardController implements Initializable {
-
+public class RhViewController implements Initializable {
 
     @FXML
     private StackPane contentArea;
@@ -36,8 +35,6 @@ public class DashboardController implements Initializable {
 
     /**
      * Définit le matricule de l'employé connecté. Cette méthode est appelée par LoginController.
-     *
-     * @param matricule Le matricule de l'employé.
      */
     public void setConnectedEmployeMatricule(String matricule) {
         this.connectedEmployeMatricule = matricule;
@@ -48,9 +45,6 @@ public class DashboardController implements Initializable {
 
     /**
      * Méthode d'initialisation du contrôleur. Appelée automatiquement après le chargement du fichier FXML.
-     *
-     * @param location L'emplacement utilisé pour résoudre les chemins relatifs.
-     * @param resources Les ressources utilisées pour localiser l'objet racine.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,9 +55,7 @@ public class DashboardController implements Initializable {
 
     /**
      * Charge et affiche la vue de demande de congé de l'employé.
-     * Le matricule de l'employé est passé au contrôleur de la nouvelle vue.
-     *
-     * @param event L'événement de l'interface utilisateur qui a déclenché cette méthode. Peut être null.
+     * Le matricule de l'employé est passé au contrôleur de la nouvelle vue..
      */
     @FXML
     private void loadDemandeConge(ActionEvent event) {
@@ -77,7 +69,7 @@ public class DashboardController implements Initializable {
                 congeController.setEmployeMatricule(connectedEmployeMatricule);
             } else {
                 System.err.println("ERREUR: CongeController ou matricule manquant pour la vue de Demande de Congé.");
-            }
+             }
 
             contentArea.getChildren().setAll(demandeCongeView);
         } catch (IOException e) {
@@ -88,8 +80,6 @@ public class DashboardController implements Initializable {
 
     /**
      * Charge et affiche la vue de la liste des congés pour le service des ressources humaines.
-     *
-     * @param event L'événement de l'interface utilisateur.
      */
     @FXML
     private void loadListeCongesRH(ActionEvent event) {
@@ -104,9 +94,22 @@ public class DashboardController implements Initializable {
     }
 
     /**
+     * Charge et affiche la vue de la liste des permissions pour le service des ressources humaines.
+     */
+    @FXML
+    private void loadGererPermission(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rh_permission_view.fxml"));
+            Parent permissionView = loader.load();
+            contentArea.getChildren().setAll(permissionView);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de rh_permisison_view.fxml: " + e.getMessage());
+        }
+    }
+
+    /**
      * Charge et affiche la vue de gestion des employés (CRUD).
-     *
-     * @param event L'événement de l'interface utilisateur.
      */
     @FXML
     private void loadGererEmployes(ActionEvent event) {
@@ -123,8 +126,6 @@ public class DashboardController implements Initializable {
     /**
      * Gère la déconnexion de l'utilisateur.
      * Ferme la fenêtre actuelle et charge la vue de connexion.
-     *
-     * @param event L'événement de l'interface utilisateur.
      */
     @FXML
     private void handleLogout(ActionEvent event) {

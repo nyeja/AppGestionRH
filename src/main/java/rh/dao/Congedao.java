@@ -7,13 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
 
-public class congedao {
+public class Congedao {
 
     /**
      * Ajoute une nouvelle demande de congé dans la base de données.
@@ -23,7 +21,7 @@ public class congedao {
      * @throws SQLException Si une erreur de base de données se produit.
      */
     public void ajouterConge(Conge conge) throws SQLException {
-        String sql = "INSERT INTO Conge (ID_CONGE, MATRICULE_EMPLOYE, DATE_DEBUT, DATE_FIN, TYPE_CONGE, JUSTIFICATIF, STATUT, DATE_SOUMISSION) VALUES (?, ?, ?, ?, ?, ?, ?, SYSDATE)";
+        String sql = "INSERT INTO Conge (ID_CONGE, MATRICULE_EMPLOYE, DATE_DEBUT, DATE_FIN, TYPE_CONGE, JUSTIFICATIF, STATUT, NB_JOURS, DATE_SOUMISSION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, SYSDATE)";
 
         try (Connection conn = ConnexionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -35,6 +33,7 @@ public class congedao {
             ps.setString(5, conge.getTypeConge());
             ps.setString(6, conge.getJustificatif());
             ps.setString(7, conge.getStatut());
+            ps.setInt(8, conge.getNbJours());
 
             ps.executeUpdate();
         }
@@ -50,9 +49,9 @@ public class congedao {
     public List<Conge> getAllConges() throws SQLException {
         List<Conge> conges = new ArrayList<>();
 
-        String sql = "SELECT c.ID_CONGE, c.MATRICULE_EMPLOYE, c.DATE_SOUMISSION, c.JUSTIFICATIF, "+
-                "c.DATE_DEBUT, c.DATE_FIN, c.TYPE_CONGE, c.STATUT, c.NB_JOURS, " +
-                "e.NOM, e.PRENOMS " +
+        String sql = "SELECT c.ID_CONGE, c.MATRICULE_EMPLOYE, c.DATE_SOUMISSION, c.JUSTIFICATIF, " +
+                "c.DATE_DEBUT, c.DATE_FIN, c.TYPE_CONGE, c.STATUT, " +
+                "e.NOM, e.PRENOMS, e.SOLDE_CONGE " +
                 "FROM CONGE c " +
                 "INNER JOIN EMPLOYE e ON c.MATRICULE_EMPLOYE = e.ID " +
                 "ORDER BY c.STATUT ASC, c.DATE_SOUMISSION DESC";
@@ -101,13 +100,12 @@ public class congedao {
         conge.setMatriculeEmploye(rs.getString("MATRICULE_EMPLOYE"));
         conge.setDateDebut(rs.getDate("DATE_DEBUT").toLocalDate());
         conge.setDateFin(rs.getDate("DATE_FIN").toLocalDate());
-
         conge.setTypeConge(rs.getString("TYPE_CONGE"));
         conge.setJustificatif(rs.getString("JUSTIFICATIF"));
         conge.setStatut(rs.getString("STATUT"));
-
         conge.setNom(rs.getString("NOM"));
         conge.setPrenoms(rs.getString("PRENOMS"));
+        conge.setSoldeConge(rs.getInt("SOLDE_CONGE"));
 
         return conge;
     }
@@ -137,4 +135,35 @@ public class congedao {
             ps.executeUpdate();
         }
     }
+
+    /**
+     * Récupère toutes les demandes de congé pour un employé spécifique.
+     * @param matriculeEmploye Le matricule de l'employé.
+     * @return Une liste des demandes de congé de l'employé.
+     * @throws SQLException Si une erreur de base de données se produit.
+     */
+    public List<Conge> getCongeByEmployeMatricule(String matriculeEmploye) throws SQLException {
+        List<Conge> conges = new ArrayList<>();
+        String query = "SELECT * FROM conge WHERE matricule_employe = ?";
+        try (Connection conn = ConnexionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, matriculeEmploye);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Conge conge = new Conge();
+                conge.setIdConge(rs.getString("id_conge"));
+                conge.setMatriculeEmploye(rs.getString("matricule_employe"));
+                conge.setDateDebut(rs.getDate("date_debut").toLocalDate());
+                conge.setDateFin(rs.getDate("date_fin").toLocalDate());
+                conge.setTypeConge(rs.getString("type_conge"));
+                conge.setJustificatif(rs.getString("justificatif")); // Assurez-vous que le nom de la colonne est correct
+                conge.setStatut(rs.getString("statut"));
+                conges.add(conge);
+            }
+        }
+        return conges;
+    }
+
 }

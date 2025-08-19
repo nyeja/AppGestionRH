@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.DashboardController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.RhViewController">
     <left>
         <VBox prefWidth="200.0" style="-fx-background-color: #2F4F4F;" BorderPane.alignment="CENTER">
             <padding>
@@ -46,6 +46,16 @@
                             <image><Image url="@../img/employee_icon.png" /></image> </ImageView>
                     </graphic>
                 </Button>
+                <Button fx:id="btnControlePermission" onAction="#loadGererPermission" prefWidth="180.0" text="Contrôle permissions" style="-fx-background-color: #5F9EA0; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;">
+                    <graphic>
+                        <!-- Ajoutez ici une icône pour la gestion des absences si vous en avez une -->
+                    </graphic>
+                </Button>
+<!--                <Button fx:id="btnNotifications" onAction="#loadNotificationsView" prefWidth="180.0" text="Notifications" style="-fx-background-color: #5F9EA0; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;">-->
+<!--                    <graphic>-->
+<!--                        &lt;!&ndash; Ajoutez ici une icône pour les notifications si vous en avez une &ndash;&gt;-->
+<!--                    </graphic>-->
+<!--                </Button>-->
                 <Pane VBox.vgrow="ALWAYS" /> <Button fx:id="btnLogout" onAction="#handleLogout" prefWidth="180.0" text="Déconnexion" style="-fx-background-color: #FF6347; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;">
                 <graphic>
                     <ImageView fitHeight="20" fitWidth="20">
