@@ -36,8 +36,8 @@ public class PostController {
     private Poste posteSelectionne = null;
 
     private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
-    private static final String DB_USER = "Yola";
-    private static final String DB_PASSWORD = "Yolabd";
+    private static final String DB_USER = "walker";
+    private static final String DB_PASSWORD = "walker";
 
     @FXML
     public void initialize() {
@@ -46,15 +46,14 @@ public class PostController {
         loadData();
         setupSearchFilter();
     }
-
     private void configureTableColumns() {
-        colIdPoste.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colIdDepartement.setCellValueFactory(new PropertyValueFactory<>("idDepartement"));
-        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colLocalisation.setCellValueFactory(new PropertyValueFactory<>("localisation"));
-        colNomDepartement.setCellValueFactory(new PropertyValueFactory<>("nomDepartement"));
-        tablePoste.setItems(posteList);
+        colIdPoste.setCellValueFactory(cellData -> cellData.getValue().idProperty());
+        colNom.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
+        colLocalisation.setCellValueFactory(cellData -> cellData.getValue().localisationProperty());
+        colIdDepartement.setCellValueFactory(cellData -> cellData.getValue().idDepartementProperty());
+        colNomDepartement.setCellValueFactory(cellData -> cellData.getValue().nomDepartementProperty());
     }
+
 
     private void setupListeners() {
         tablePoste.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -89,8 +88,8 @@ public class PostController {
 
             while (rs.next()) {
                 departementList.add(new Departement(
-                    rs.getString("ID_DEPARTEMENT"),
-                    rs.getString("NOM")
+                        rs.getString("ID_DEPARTEMENT"),
+                        rs.getString("NOM")
                 ));
             }
             choiceDepartement.setItems(departementList);
@@ -101,7 +100,7 @@ public class PostController {
 
     private void loadPostes() {
         posteList.clear();
-        String sql = "SELECT ID_POSTE, NOM, LOCALISATION, ID_DEPARTEMENT, NOM_DEPARTEMENT FROM POSTE ORDER BY ID_POSTE DESC";
+        String sql = "SELECT * FROM POSTE ORDER BY ID_POSTE DESC";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -109,11 +108,11 @@ public class PostController {
 
             while (rs.next()) {
                 posteList.add(new Poste(
-                    rs.getString("ID_POSTE"),
-                    rs.getString("NOM"),
-                    rs.getString("LOCALISATION"),
-                    rs.getString("ID_DEPARTEMENT"),
-                    rs.getString("NOM_DEPARTEMENT")
+                        rs.getString("ID_POSTE"),
+                        rs.getString("NOM"),
+                        rs.getString("LOCALISATION"),
+                        rs.getString("ID_DEPARTEMENT"),
+                        rs.getString("NOM_DEPARTEMENT")
                 ));
             }
         } catch (SQLException e) {
@@ -129,10 +128,10 @@ public class PostController {
                 if (newVal == null || newVal.isEmpty()) return true;
                 String filter = newVal.toLowerCase();
                 return poste.getNom().toLowerCase().contains(filter) ||
-                       poste.getLocalisation().toLowerCase().contains(filter) ||
-                       poste.getId().toLowerCase().contains(filter) ||
-                       poste.getIdDepartement().toLowerCase().contains(filter) ||
-                       poste.getNomDepartement().toLowerCase().contains(filter);
+                        poste.getLocalisation().toLowerCase().contains(filter) ||
+                        poste.getId().toLowerCase().contains(filter) ||
+                        poste.getIdDepartement().toLowerCase().contains(filter) ||
+                        poste.getNomDepartement().toLowerCase().contains(filter);
             });
         });
 
@@ -246,8 +245,8 @@ public class PostController {
 
     private boolean validateInputs() {
         return !(txtNom.getText().trim().isEmpty() ||
-                 txtLocalisation.getText().trim().isEmpty() ||
-                 choiceDepartement.getValue() == null);
+                txtLocalisation.getText().trim().isEmpty() ||
+                choiceDepartement.getValue() == null);
     }
 
     private void resetForm() {

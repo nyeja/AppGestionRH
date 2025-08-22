@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="rh.controller.AbsenceController"
+            prefWidth="900.0" prefHeight="600.0">
+
+    <children>
+        <!-- Titre -->
+        <Label text="Gestion des Absences" 
+               layoutX="20" layoutY="20" 
+               style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <!-- Formulaire -->
+        <VBox spacing="10" layoutX="20" layoutY="60" prefWidth="350">
+            <children>
+                <TextField fx:id="txtEmployeeId" promptText="ID Employé" />
+               <TextField fx:id="txtEmployeeName" promptText="Nom Employé"
+           onKeyReleased="#onNameTyped"/>
+
+
+                <!-- ChoiceBox avec FXCollections -->
+                <ChoiceBox fx:id="cbTypeAbsence">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Maladie"/>
+                            <String fx:value="Congé"/>
+                            <String fx:value="Permission"/>
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+
+                <TextField fx:id="txtMotif" promptText="Motif" />
+                <DatePicker fx:id="dpDate" promptText="Date" />
+
+                <HBox spacing="10">
+                    <Button fx:id="btnSave" text="Enregistrer" />
+                    <Button fx:id="btnCancel" text="Annuler" />
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Recherche -->
+        <TextField fx:id="txtSearch" 
+                   layoutX="400" layoutY="60" 
+                   prefWidth="300" 
+                   promptText="Rechercher une absence..." />
+
+        <!-- Tableau -->
+        <TableView fx:id="tableAbsences" 
+                   layoutX="400" layoutY="100" 
+                   prefWidth="480" prefHeight="450">
+            <columns>
+                <TableColumn fx:id="colId" text="ID Employé" prefWidth="80" />
+                <TableColumn fx:id="colNom" text="Nom" prefWidth="100" />
+                <TableColumn fx:id="colType" text="Type" prefWidth="100" />
+                <TableColumn fx:id="colDate" text="Date" prefWidth="100" />
+                <TableColumn fx:id="colMotif" text="Motif" prefWidth="100" />
+                <TableColumn fx:id="colStatut" text="Statut" prefWidth="100" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

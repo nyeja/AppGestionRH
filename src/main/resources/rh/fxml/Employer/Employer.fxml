@@ -2,22 +2,51 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="rh.controller.EmployerController">
 
+    <!-- Top: Header commun -->
     <top>
-        <Label text="Bienvenue dans l’espace Employé"
-               style="-fx-font-size: 20px; -fx-padding: 15px;"
-               BorderPane.alignment="CENTER"/>
+        <Pane prefHeight="61.0" prefWidth="974.0" style="-fx-background-color: #153793;">
+            <Label alignment="CENTER" layoutX="308.0" layoutY="13.0" prefHeight="36.0" prefWidth="385.0" 
+                   text="Espace Employé - Gestion de présence" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="25.0" />
+                </font>
+            </Label>
+        </Pane>
     </top>
 
-    <center>
-        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20px;">
-            <Button text="Demande de conger" fx:id="DemandeCongerdButton" onAction="#DemandeConger"/>
-            <Button text="Consulter mon profil" fx:id="viewProfileButton" onAction="#handleViewProfile"/>
-            <Button text="Déconnexion" onAction="#handleLogout"/>
+    <!-- Left: Menu de navigation -->
+    <left>
+        <VBox spacing="10" style="-fx-padding: 20px; -fx-background-color: #f0f0f0;" prefWidth="200">
+            <Button text="Gestion de présence" 
+                    style="-fx-background-color: #12133C; -fx-text-fill: white;"
+                    onAction="#handlePresenceManagement"/>
+            <Button text="Demande de congé" 
+                    fx:id="DemandeCongerdButton" 
+                    onAction="#DemandeConger"/>
+            <Button text="Mon profil" 
+                    fx:id="viewProfileButton" 
+                    onAction="#handleViewProfile"/>
+            <Button text="Déconnexion" 
+                    style="-fx-background-color: #d9534f; -fx-text-fill: white;"
+                    onAction="#handleLogout"/>
         </VBox>
-    </center>
+    </left>
 
+    <!-- Center: Contenu dynamique (la gestion de présence par défaut) -->
+    <center>
+        <AnchorPane fx:id="contentPane" prefHeight="610.0" prefWidth="976.0">
+            <!-- Ici on inclut le contenu de votre gestion de présence -->
+            <HBox layoutY="6.0" prefHeight="536.0" prefWidth="747.0" 
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" 
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <!-- ... (contenu exact de votre fichier presence.fxml) ... -->
+            </HBox>
+        </AnchorPane>
+    </center>
 </BorderPane>
