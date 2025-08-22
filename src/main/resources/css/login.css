@@ -1,0 +1,125 @@
+/* ===== Fond général (dégradé) ===== */
+.app-root {
+    -fx-background-color: linear-gradient(to bottom,  #2F4F4F 0%, #2a2e69 100%);
+}
+
+/* ===== Typo globale ===== */
+.app-root, .card {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial";
+    -fx-text-fill: white;
+}
+
+/* ===== En-tête ===== */
+.header-line {
+    -fx-background-color: rgba(255,255,255,0.4);
+    -fx-opacity: 0.6;
+}
+
+.avatar-emoji {
+    -fx-font-size: 28px;
+}
+
+/* ===== Carte / bloc central ===== */
+.card {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.2, 0, 8);
+}
+
+/* ===== Lignes décoratives ===== */
+.footer-line {
+    -fx-background-color: rgba(255,255,255,0.25);
+}
+
+.credit {
+    -fx-fill: rgba(255,255,255,0.6);
+    -fx-font-size: 11px;
+}
+
+/* ===== Champs ===== */
+.input-row {
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-background-radius: 10;
+    -fx-padding: 6 8 6 6;
+    -fx-border-color: white;
+    -fx-border-radius: 12;
+}
+
+.icon-box {
+    -fx-min-width: 42;      /* largeur fixe de la zone icône */
+    -fx-min-height: 38;
+    -fx-alignment: center;
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-background-radius: 8;
+}
+
+.input-field {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255,255,255,0.75);
+    -fx-font-weight: 600;               /* aspect "USERNAME" plus marqué */
+    -fx-padding: 10 6 10 6;
+}
+
+.input-field:focused {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.28), 10, 0.2, 0, 0);
+}
+
+/* ===== Bouton principal ===== */
+.primary-btn {
+    -fx-background-color:
+        linear-gradient(to bottom,  #5F9EA0,  #2F4F4F);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-padding: 12 16 12 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 16, 0.3, 0, 6);
+}
+
+.primary-btn:hover {
+    -fx-opacity: 0.95;
+    -fx-translate-y: -0.5;
+}
+
+.primary-btn:pressed {
+    -fx-opacity: 0.9;
+    -fx-translate-y: 0.5;
+}
+
+/* ===== Remember / Forgot ===== */
+.remember {
+    -fx-text-fill: rgba(255,255,255,0.85);
+}
+
+.forgot-link {
+    -fx-text-fill: rgba(255,255,255,0.85);
+    -fx-underline: false;
+}
+
+.forgot-link:hover {
+    -fx-underline: true;
+}
+.choice-box {
+    -fx-background-color: linear-gradient(to right, #2F4F4F, #2a2e69); /* Dégradé */
+    -fx-background-radius: 12;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 12;
+    -fx-border-color: white;
+    -fx-border-width: 1;
+}
+
+.choice-box .label {
+    -fx-text-fill: black; /* couleur du texte */
+}
+
+.choice-box .arrow {
+    -fx-background-color: #2F4F4F; /* couleur de la flèche */
+}
+
