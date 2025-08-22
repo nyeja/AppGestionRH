@@ -28,6 +28,7 @@ import java.sql.SQLException;
 
 
 public class dashboardController {
+    private String connectedEmployeMatricule;
 
     Connection conn = ConnexionDB.getConnection();
 
@@ -70,7 +71,10 @@ public class dashboardController {
         stackPaneDepartement.getChildren().setAll(stackPaneHome);
         stackPaneHome.setVisible(true);
     }
-
+    //Définit le matricule de l'employé connecté
+    private void setConnectedEmployeMatricule(String id){
+        this.connectedEmployeMatricule = id;
+    }
     @FXML
     private void loadDepartementView() throws IOException {
         // Charge le fichier FXML du module "Département"
@@ -119,6 +123,27 @@ public class dashboardController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private  void loadConge() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/Conge.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+    @FXML
+    private  void loadCongeAdmin() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/rh_conge_view.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+    @FXML
+    private  void loadDemandePermission() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/employe_permission_view.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
+    }
+    @FXML
+    private  void loadPermissionAdmin() throws IOException{
+        Parent node = FXMLLoader.load(getClass().getResource("/fxml/rh_permission_view.fxml"));
+        stackPaneDepartement.getChildren().setAll(node);
     }
 
     @FXML

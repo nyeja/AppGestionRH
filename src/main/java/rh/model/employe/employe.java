@@ -15,6 +15,7 @@ public class employe {
     private String motDePasse;
     private String image; // peut contenir un chemin ou juste le nom de fichier
     private String role;
+    private int soldeConge;
     // Constructeur par défaut
     public employe() {}
 
@@ -51,11 +52,12 @@ public class employe {
         this.role = role ;
     }
 
-    public employe(String id , String nom, String motDePasse, String role) {
+    public employe(String id , String nom, String motDePasse, String role , int soldeConge) {
         this.id = id;
         this.nom = nom;
         this.motDePasse = motDePasse;
         this.role = role;
+        this.soldeConge = soldeConge;
     }
 
     public employe(String motDePasse){
@@ -98,6 +100,10 @@ public class employe {
 
     public String getRole(){return role; }
     public void setRole(String role) { this.role = role; }
+
+    public int getSoldeConge(){return soldeConge; }
+    public void setSoldeConge(int soldeConge) { this.soldeConge = soldeConge; }
+
     @Override
     public String toString() {
         return prenom + " " + nom + " (" + poste + ")";

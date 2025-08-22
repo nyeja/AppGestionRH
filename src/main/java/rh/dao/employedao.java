@@ -12,6 +12,7 @@ import java.sql.*;
 
 
 public class employedao {
+
     // Champs du formulaire
     @FXML private TextField txtEmployeeId;
     @FXML private TextField txtNom;
@@ -25,6 +26,16 @@ public class employedao {
     @FXML private Image imageView;
     @FXML
     private TableView<employe> tableEmployes;
+    public void updateSoldeConge(String id_employe , int nouveauSolde)throws SQLException {
+        String sql = "UPDATE employe set SOLDE_CONGE = ? where ID = ? ";
+        try(Connection conn = ConnexionDB.getConnection() ;
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1,nouveauSolde);
+            stmt.setString(2, id_employe);
+            stmt.executeUpdate();
+        }
+    }
+
     public String getNextEmployeId() throws SQLException {
         String sql = "SELECT get_next_employe_id() FROM dual";
         try (Connection con = ConnexionDB.getConnection();
@@ -38,7 +49,7 @@ public class employedao {
         }
     }
     public static employe trouverParUsername(String username) {
-        String sql = "SELECT * FROM employe WHERE nom = ?";
+        String sql = "SELECT id , nom , mdp , solde_conge FROM employe WHERE id=?";
         try (Connection conn = ConnexionDB.getConnection() ;
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -50,7 +61,8 @@ public class employedao {
                         rs.getString("id"),
                         rs.getString("nom"),
                         rs.getString("mdp"),
-                        rs.getString("role")
+                        rs.getString("role"),
+                        rs.getInt("solde_conge")
                 );
 
             }
@@ -62,7 +74,7 @@ public class employedao {
         return null; // utilisateur non trouvé
     }
     public static employe getEmployeById(String id) throws SQLException {
-        String sql = "SELECT * FROM employe WHERE id=?";
+        String sql = "SELECT id , nom , mdp , ROLE ,solde_conge FROM employe WHERE id=?";
         try (Connection conn = ConnexionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -73,7 +85,8 @@ public class employedao {
                             rs.getString("id"),
                             rs.getString("nom"),
                             rs.getString("mdp"),
-                            rs.getString("role")
+                            rs.getString("ROLE"),
+                            rs.getInt("solde_conge")
                     );
 
                 }

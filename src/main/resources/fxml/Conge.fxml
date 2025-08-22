@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.CongeController">
+    <children>
+        <VBox prefHeight="800.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <BorderPane VBox.vgrow="NEVER">
+                    <left>
+                        <Label text="Demande de congé" BorderPane.alignment="CENTER">
+                            <font>
+                                <Font name="Times New Roman Bold" size="20.0" />
+                            </font>
+                            <BorderPane.margin>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </BorderPane.margin>
+                        </Label>
+                    </left>
+                    <right>
+                        <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label fx:id="lblEmployeMatricule" text="Matricule Employé: Non défini" />
+                                <Label text="Solde de congés restant:" />
+                                <Label fx:id="lblSoldeConge" style="-fx-font-weight: bold; -fx-font-size: 14px;" text="-" />
+                            </children>
+                            <padding>
+                                <Insets right="20.0" />
+                            </padding>
+                        </HBox>
+                    </right>
+                </BorderPane>
+
+                <Separator />
+
+                <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Date de début du congé" />
+                        <Label text="Date de fin du congé" GridPane.rowIndex="1" />
+                        <Label text="Types de congé" GridPane.rowIndex="2" />
+                        <Label text="Justificatif" GridPane.rowIndex="3" />
+                        <DatePicker fx:id="DebutDateConge" GridPane.columnIndex="1" />
+                        <DatePicker fx:id="FinDateConge" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="TypeConge" prefWidth="150.0" promptText="Sélectionnez un type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextArea fx:id="JustificatifField" prefHeight="60.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                            <children>
+                                <Button fx:id="EnvoyerBtn" onAction="#handleEnvoyerDemande" text="Envoyer la demande" />
+                                <Button fx:id="AnnulerBtn" onAction="#handleAnnulerDemande" text="Annuler" />
+                                <Label fx:id="messageStatut" textFill="BLUE" />
+                            </children>
+                        </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </VBox.margin>
+                </GridPane>
+
+                <Separator />
+
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Historique des demandes">
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                    </VBox.margin>
+                </Label>
+
+                <TableView fx:id="congeHistoryTable" prefHeight="200.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colIdConge" prefWidth="80.0" text="ID" />
+                        <TableColumn fx:id="colDateDebut" prefWidth="100.0" text="Date Début" />
+                        <TableColumn fx:id="colDateFin" prefWidth="100.0" text="Date Fin" />
+                        <TableColumn fx:id="colTypeConge" prefWidth="120.0" text="Type" />
+                        <TableColumn fx:id="colJustificatif" prefWidth="350.0" text="Justificatif" />
+                        <TableColumn fx:id="colStatut" prefWidth="100.0" text="Statut" />
+                    </columns>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

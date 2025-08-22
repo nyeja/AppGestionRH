@@ -14,14 +14,18 @@ module rh {
 
     opens rh.model.departement to java.base;
     opens rh.model.employe to java.base;
+    opens rh.model to java.base;
     opens rh.dao to java.base;
 
+    opens rh.controller.parametre to javafx.fxml;
     opens rh.controller to javafx.fxml;
 
 
     exports rh.model.departement;
     exports rh.model.employe;
     exports rh.dao;
+    exports rh.model;
+    exports rh.controller;
     exports rh;
-    opens rh.controller.parametre to javafx.fxml;
+
 }
