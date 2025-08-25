@@ -10,9 +10,9 @@ import javafx.scene.image.Image;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard/dashboard.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard/dashboard.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/poste/poste.fxml"));
-        //Parent root = FXMLLoader.load(getClass().("/fxml/employe/employe.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/employe/Employe.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/departement/dpm.fxml"));
         primaryStage.setScene(new Scene(root));

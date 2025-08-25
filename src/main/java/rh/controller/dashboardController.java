@@ -32,14 +32,6 @@ public class dashboardController {
 
     Connection conn = ConnexionDB.getConnection();
 
-    @FXML private StackPane mainContentDepartement;
-
-    @FXML private MenuItem itemPoste;
-
-    @FXML private MenuItem itemEmployer;
-
-    @FXML private MenuItem itemDepartement;
-
     @FXML private ImageView ImageProfile;
 
     @FXML private StackPane stackPaneHome;
@@ -49,6 +41,17 @@ public class dashboardController {
     @FXML private Button btnEmployer;
     @FXML private Button btnDepartement;
     @FXML private Button btnPoste;
+
+    @FXML private Button home;
+    @FXML private Button btnConge;
+    @FXML private Button btnPresence;
+    @FXML private Button btnPermission;
+    @FXML private Button btnDemandePermission;
+    @FXML private Button btnListeConge;
+    @FXML private Button btnParametre;
+
+    private Button currentSelected; // bouton actif
+    private Button currentSelectedSidebar;
 
     @FXML
     private void initialize(){
@@ -75,8 +78,27 @@ public class dashboardController {
     private void setConnectedEmployeMatricule(String id){
         this.connectedEmployeMatricule = id;
     }
+    private void selectMenuButton(Button button) {
+        if (currentSelected != null) {
+            currentSelected.getStyleClass().remove("selected");
+        }
+        if (!button.getStyleClass().contains("selected")) {
+            button.getStyleClass().add("selected");
+        }
+        currentSelected = button;
+    }
+    private void selectSidebarButton(Button button) {
+        if (currentSelectedSidebar != null) {
+            currentSelectedSidebar.getStyleClass().remove("selected");
+        }
+        if (!button.getStyleClass().contains("selected")) {
+            button.getStyleClass().add("selected");
+        }
+        currentSelectedSidebar = button;
+    }
     @FXML
     private void loadDepartementView() throws IOException {
+        selectMenuButton(btnDepartement);
         // Charge le fichier FXML du module "Département"
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/departement/dpm.fxml"));
         // Affiche ce module dans le StackPane principal
@@ -86,24 +108,28 @@ public class dashboardController {
 
     @FXML
     private  void loadEmployer() throws IOException{
+        selectMenuButton(btnEmployer);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/employe/employe.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
 
     @FXML
     private  void loadPoste() throws IOException{
+        selectMenuButton(btnPoste);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/poste/poste.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
 
     @FXML
     private void loadPresence() throws IOException{
+        selectSidebarButton(btnPresence);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/presence/presence.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
 
     @FXML
     private void loadParametre() throws IOException{
+        selectSidebarButton(btnParametre);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/parametre/parametre.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
@@ -127,21 +153,25 @@ public class dashboardController {
 
     @FXML
     private  void loadConge() throws IOException{
+        selectSidebarButton(btnConge);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/Conge.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
     @FXML
     private  void loadCongeAdmin() throws IOException{
+        selectSidebarButton(btnListeConge);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/rh_conge_view.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
     @FXML
     private  void loadDemandePermission() throws IOException{
+        selectSidebarButton(btnDemandePermission);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/employe_permission_view.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }
     @FXML
     private  void loadPermissionAdmin() throws IOException{
+        selectSidebarButton(btnPermission);
         Parent node = FXMLLoader.load(getClass().getResource("/fxml/rh_permission_view.fxml"));
         stackPaneDepartement.getChildren().setAll(node);
     }

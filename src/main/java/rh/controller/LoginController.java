@@ -32,6 +32,9 @@ public class LoginController {
     private ChoiceBox<String> roleChoiceBox;
     @FXML
     private Label AllertMessage;
+    @FXML
+    private Button cancelButton;
+
 
     @FXML
     public void initialize() {
@@ -44,16 +47,22 @@ public class LoginController {
         } else {
             System.err.println("ERREUR: roleChoiceBox n'a pas été injecté par FXMLLoader !");
         }
+        cancelButton.setOnAction(e -> {
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close(); // Ferme la fenêtre
+        });
 
         loadRememberedCredentials();
     }
 
     @FXML
 private void handleLogin(ActionEvent event) throws SQLException {
-    String userID = usernameField.getText();
-    String password = passwordField.getText();
-    String role = roleChoiceBox.getValue();
-
+    //String userID = usernameField.getText();
+    //String password = passwordField.getText();
+    //String role = roleChoiceBox.getValue();
+    String userID = "emp-041";
+    String password = "haendel.10";
+    String role = "Admin";
     System.out.println("Saisie utilisateur : " + userID + ", " + password + ", " + role);
 
     employe user = employedao.getEmployeById(userID);

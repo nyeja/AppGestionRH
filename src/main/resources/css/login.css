@@ -90,6 +90,30 @@
     -fx-translate-y: 0.5;
 }
 
+/* ==== cancel Bouton ==== */
+
+.cancel-btn {
+    -fx-background-color:
+        linear-gradient(to bottom,  #F5002D,  #B5233D);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-padding: 12 16 12 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 16, 0.3, 0, 6);
+}
+
+.cancel-btn:hover {
+    -fx-opacity: 0.95;
+    -fx-translate-y: -0.5;
+}
+
+.cancel-btn:pressed {
+    -fx-opacity: 0.9;
+    -fx-translate-y: 0.5;
+}
+
+
 /* ===== Remember / Forgot ===== */
 .remember {
     -fx-text-fill: rgba(255,255,255,0.85);

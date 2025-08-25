@@ -16,19 +16,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="610.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.EmployeeController">
+<AnchorPane prefHeight="610.0" prefWidth="976.0" stylesheets="@../../css/dpmPstEmpl.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.EmployeeController">
    <children>
       <VBox prefHeight="630.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="634.0" prefWidth="976.0">
                <children>
-                  <Label layoutX="33.0" layoutY="26.0" prefHeight="36.0" prefWidth="377.0" text="Gestion des employés ">
+                  <Label fx:id="GestionTexte" layoutX="33.0" layoutY="16.0" prefHeight="36.0" prefWidth="377.0" text="Gestion des employés ">
                      <font>
-                        <Font name="Times New Roman Bold" size="25.0" />
+                        <Font name="Times New Roman Bold" size="27.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfRecherche" layoutX="483.0" layoutY="25.0" prefHeight="36.0" prefWidth="415.0" />
-                  <Button fx:id="btnRechercher" layoutX="920.0" layoutY="24.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="28.0">
+                  <TextField fx:id="tfRecherche" layoutX="502.0" layoutY="15.0" prefHeight="36.0" prefWidth="415.0" />
+                  <Button fx:id="btnRechercher" layoutX="920.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="28.0">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -37,7 +37,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <TableView fx:id="tableEmployes" layoutX="9.0" layoutY="81.0" prefHeight="268.0" prefWidth="963.0">
+                  <TableView fx:id="tableEmployes" layoutX="9.0" layoutY="71.0" prefHeight="268.0" prefWidth="963.0">
                     <columns>
                       <TableColumn fx:id="colId" prefWidth="75.0" text="Id" />
                       <TableColumn fx:id="colNom" prefWidth="100.0" text="Nom" />
@@ -51,105 +51,111 @@
                         <TableColumn fx:id="colRole" prefWidth="75.0" text="Rôle" />
                     </columns>
                   </TableView>
-                  <Button fx:id="btnModifier" alignment="CENTER" layoutX="854.0" layoutY="480.0" mnemonicParsing="false" onAction="#preparModificationEmploye" prefHeight="42.0" prefWidth="102.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE" AnchorPane.bottomAnchor="88.0" AnchorPane.leftAnchor="854.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="480.0">
+                  <Button fx:id="btnAjouter" alignment="CENTER" layoutX="854.0" layoutY="420.0" mnemonicParsing="false" onAction="#ajouterEmploye" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: green;" text="Ajouter" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnSupprimer" alignment="CENTER" layoutX="854.0" layoutY="552.0" onAction="#supprimerEmploye" prefHeight="20.0" prefWidth="102.0" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
+
+                  <Button fx:id="btnModifier" alignment="CENTER" layoutX="854.0" layoutY="480.0" mnemonicParsing="false" onAction="#preparModificationEmploye" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: blue;" text="Modifier" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnAjouter" alignment="CENTER" layoutX="854.0" layoutY="420.0" mnemonicParsing="false" onAction="#ajouterEmploye" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: green;" text="Ajouter" textAlignment="CENTER" textFill="WHITE">
+
+                  <Button fx:id="btnSupprimer" alignment="CENTER" layoutX="854.0" layoutY="540.0" mnemonicParsing="false" onAction="#supprimerEmploye" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnViderChamps" alignment="CENTER" disable="true" layoutX="68.0" layoutY="356.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="17.0" prefWidth="150.0" style="-fx-background-color: orange;" text="Vider les champs" textFill="WHITE">
+
+                  <Button fx:id="btnViderChamps" alignment="CENTER" disable="true" layoutX="68.0" layoutY="352.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="17.0" prefWidth="150.0" style="-fx-background-color: orange;" text="Vider les champs" textFill="WHITE">
                      <effect>
                         <Glow />
                      </effect>
                   </Button>
-                  <Button fx:id="btnValiderModification" alignment="CENTER" disable="true" layoutX="278.0" layoutY="356.0" mnemonicParsing="false" onAction="#modifierEmploye" prefHeight="16.0" prefWidth="150.0" style="-fx-background-color: green;" text="Valider la modification" textFill="WHITE">
+                  <Button fx:id="btnValiderModification" alignment="CENTER" disable="true" layoutX="278.0" layoutY="352.0" mnemonicParsing="false" onAction="#modifierEmploye" prefHeight="16.0" prefWidth="150.0" style="-fx-background-color: green;" text="Valider la modification" textFill="WHITE">
                      <effect>
                         <Glow />
                      </effect>
                   </Button>
-                  <Label fx:id="lblNombreEmployes" alignment="CENTER" layoutX="852.0" layoutY="355.0" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: #589197; -fx-background-radius: 2;" text="Total: 0 employés" textFill="WHITE" />
-                  <Pane layoutX="39.0" layoutY="387.0" prefHeight="216.0" prefWidth="627.0" style="-fx-background-color: #CFD7C7; -fx-background-radius: 2;">
+                  <Label fx:id="lblNombreEmployes" alignment="CENTER" layoutX="852.0" layoutY="351.0" prefHeight="27.0" prefWidth="110.0" style="-fx-background-color: #589197; -fx-background-radius: 2; -fx-border-radius: 10; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" text="Total: 0 employés" textFill="WHITE" />
+                  <Pane layoutX="9.0" layoutY="387.0" prefHeight="216.0" prefWidth="627.0" style="-fx-background-color: #CFD7C7; -fx-background-radius: 2;">
                      <children>
-                        <TextField fx:id="txtEmployeeId" layoutX="38.0" layoutY="45.0" prefHeight="28.0" prefWidth="145.0" promptText="id" />
-                        <TextField fx:id="txtNom" layoutX="243.0" layoutY="45.0" promptText="nom" />
-                        <TextField fx:id="txtPrenom" layoutX="446.0" layoutY="45.0" promptText="prénom(s)" />
-                        <TextField fx:id="txtEmail" layoutX="38.0" layoutY="108.0" promptText="email@exemple.com" />
-                        <TextField fx:id="txtTelephone" layoutX="243.0" layoutY="107.0" promptText="0123456789" />
-                        <TextField fx:id="txtAdresse" layoutX="448.0" layoutY="178.0" promptText="adresse" />
-                        <DatePicker fx:id="dateEmbauche" layoutX="448.0" layoutY="107.0" prefHeight="26.0" prefWidth="145.0" promptText="Sélectionner une date" />
-                        <ComboBox fx:id="comboDepartement" layoutX="37.0" layoutY="178.0" prefWidth="150.0" promptText="Sélectionner ou saisir" />
-                        <ComboBox fx:id="comboPoste" layoutX="242.0" layoutY="178.0" prefWidth="150.0" promptText="Sélectionner ou saisir" />
-                        <Label layoutX="39.0" layoutY="22.0" text="id employé">
+                        <TextField fx:id="txtEmployeeId" layoutX="38.0" layoutY="41.0" prefHeight="28.0" prefWidth="145.0" promptText="id" />
+                        <TextField fx:id="txtNom" layoutX="243.0" layoutY="41.0" promptText="nom" />
+                        <TextField fx:id="txtPrenom" layoutX="446.0" layoutY="41.0" promptText="prénom(s)" />
+                        <TextField fx:id="txtEmail" layoutX="38.0" layoutY="104.0" promptText="email@exemple.com" />
+                        <TextField fx:id="txtTelephone" layoutX="243.0" layoutY="103.0" promptText="0123456789" />
+                        <TextField fx:id="txtAdresse" layoutX="448.0" layoutY="104.0" promptText="adresse" />
+                        <DatePicker fx:id="dateEmbauche" layoutX="448.0" layoutY="170.0" prefHeight="36.0" prefWidth="145.0" promptText="Sélectionner une date" />
+
+                        <ComboBox fx:id="comboDepartement" layoutX="37.0" layoutY="170.0" prefHeight="36.0" prefWidth="145.0" promptText="Sélectionner ou saisir" />
+
+                        <ComboBox fx:id="comboPoste" layoutX="242.0" layoutY="170.0" prefHeight="36.0" prefWidth="145.0" promptText="Sélectionner ou saisir" />
+                        <Label layoutX="39.0" layoutY="18.0" text="id employé">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="249.0" layoutY="22.0" text="Nom ">
+                        <Label layoutX="249.0" layoutY="18.0" text="Nom ">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="448.0" layoutY="22.0" text="Prénoms">
+                        <Label layoutX="448.0" layoutY="18.0" text="Prénoms">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="37.0" layoutY="87.0" text="E-mail">
+                        <Label layoutX="37.0" layoutY="83.0" text="E-mail">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="249.0" layoutY="87.0" text="Téléphone">
+                        <Label layoutX="249.0" layoutY="83.0" text="Téléphone">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="448.0" layoutY="87.0" text="Date d'embauche">
+                        <Label layoutX="448.0" layoutY="146.0" text="Date d'embauche">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="40.0" layoutY="150.0" text="Département">
+                        <Label layoutX="40.0" layoutY="146.0" text="Département">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="249.0" layoutY="150.0" text="Poste">
+                        <Label layoutX="249.0" layoutY="146.0" text="Poste">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="450.0" layoutY="150.0" text="Adresse">
+                        <Label layoutX="450.0" layoutY="83.0" text="Adresse">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <AnchorPane layoutX="681.0" layoutY="387.0" prefHeight="208.0" prefWidth="145.0" style="-fx-background-color: #589197; -fx-background-radius: 3;">
+                  <AnchorPane layoutX="681.0" layoutY="387.0" prefHeight="190.0" prefWidth="150.0" style="-fx-background-color: #f9f9f9; -fx-background-radius: 10; -fx-border-color: #dcdcdc; -fx-border-radius: 10; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);">
                      <children>
-                        <ImageView fx:id="imageView" fitHeight="160.0" fitWidth="130.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="12.0">
+                        <!-- Image de profil -->
+                        <ImageView fx:id="imageView" fitHeight="140.0" fitWidth="140.0" layoutX="5.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: #eaeaea; -fx-background-radius: 100;">
                            <image>
                               <Image url="@../../../../../../../../../../utilisateur.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="btnImport" alignment="CENTER" layoutX="-3.0" layoutY="178.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="140.0" style="-fx-background-color: #E1DD7B;" text="importer" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="156.0">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
+
+                        <!-- Bouton Import moderne -->
+                        <Button fx:id="btnImport" layoutX="2.0" layoutY="166.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to right, #4facfe, #00f2fe);                        -fx-background-radius: 8;                        -fx-text-fill: white;                        -fx-font-size: 13px;                        -fx-font-weight: bold;                        -fx-cursor: hand;" text="Importer" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0">
                         </Button>
                      </children>
                   </AnchorPane>
-                  <Button fx:id="btnAnulerModification" alignment="CENTER" disable="true" layoutX="470.0" layoutY="355.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="18.0" prefWidth="150.0" style="-fx-background-color: grey;" text="Annuler modification" textFill="WHITE">
+
+                  <Button fx:id="btnAnulerModification" alignment="CENTER" disable="true" layoutX="470.0" layoutY="351.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="18.0" prefWidth="150.0" style="-fx-background-color: grey;" text="Annuler modification" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>

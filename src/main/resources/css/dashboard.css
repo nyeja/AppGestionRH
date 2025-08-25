@@ -1,0 +1,146 @@
+/* === Style global === */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #E2E7E9;
+}
+
+/* === Sidebar (menu gauche) === */
+.vbox {
+    -fx-background-color: linear-gradient(to bottom, #153793, #0d255f);
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}
+
+/* Boutons du menu latéral */
+.vbox .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-alignment: center-left;
+    -fx-padding: 8 15;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+/* Icônes + texte bien alignés */
+.vbox .button .graphic {
+    -fx-padding: 0 10 0 0;
+}
+
+/* Hover et sélection */
+.vbox .button:hover {
+    -fx-background-color: rgba(255,255,255,0.15);
+}
+
+.vbox .button:pressed, .vbox .button:selected {
+    -fx-background-color: rgba(255,255,255,0.25);
+    -fx-font-weight: bold;
+}
+
+/* === Sidebar Buttons === */
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-padding: 6 12;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+/* Bouton sidebar sélectionné */
+.sidebar-button.selected {
+    -fx-background-color: white; /* couleur quand cliqué */
+    -fx-text-fill: #0C1869;
+    -fx-font-weight: bold;
+}
+
+/* === Barre du haut === */
+.pane-top {
+    -fx-background-color: #153793;
+    -fx-padding: 6;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 6, 0, 0, 2);
+}
+
+/* Boutons de la barre du haut */
+.pane-top .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.pane-top .button:hover {
+    -fx-background-color: rgba(255,255,255,0.15);
+}
+
+/* === Zone principale === */
+.stack-pane {
+    -fx-background-color: #f9fafc;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+/* Titre "Bienvenu" */
+.label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Label du copyright */
+#copyrightLabel {
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 12px;
+}
+
+/* === Bouton déconnexion === */
+#btnDeconnexion {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #c0392b);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+}
+
+#btnDeconnexion:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}/* Boutons du menu haut (Employer, Département, Poste) */
+ .top-menu .button {
+      -fx-background-color: none; /* transparent au démarrage */
+        -fx-text-fill: white;
+         -fx-font-size: 15px;
+         -fx-padding: 6 12;
+         -fx-border-width: 0 0 0 0; /* pas de bordure au départ */
+         -fx-border-color: transparent;
+         -fx-border-style: solid;
+         -fx-cursor: hand;
+ }
+ #paneTopMenu{
+ -fx-background-color: none;
+ }
+#paneTopMenu .button.selected {
+    -fx-background-color: white;
+    -fx-text-fill: #153793;
+    -fx-font-weight: bold;
+}
+ .top-menu .button:hover {
+     -fx-background-color: rgba(255,255,255,0.2);
+ }
+
+ /* ✅ Style quand le bouton est actif/sélectionné */
+ .top-menu .button.selected {
+     -fx-background-color: white;
+     -fx-text-fill: #153793;
+     -fx-font-weight: bold;
+     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 1);
+ }
+.top-menu .top-menu-button.selected {
+    -fx-background-color: white;
+    -fx-text-fill: #153793;
+    -fx-font-weight: bold;
+}

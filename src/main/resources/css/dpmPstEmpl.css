@@ -1,0 +1,99 @@
+/* === Style global === */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #f4f6f9; /* gris clair moderne */
+}
+#GestionTexte{
+    -fx-font-size: 30px;
+}
+/* === Label général === */
+.label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 11px;
+}
+
+/* === Boutons === */
+.button {
+    -fx-background-radius: 8;
+    -fx-padding: 6 14;
+    -fx-cursor: hand;
+    -fx-text-fill: white;   /* texte toujours blanc */
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 2);
+    -fx-border-radius: 8;
+}
+
+/* Couleurs spécifiques */
+#btnAjouter, #modifValider {
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #219150);
+}
+#btnModifier {
+    -fx-background-color: linear-gradient(to bottom, #2980b9, #2471a3);
+}
+#btnSupprimer {
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b);
+}
+#btnviderChamps {
+    -fx-background-color: linear-gradient(to bottom, #f39c12, #e67e22);
+}
+#btnAnnulerModification {
+    -fx-background-color: linear-gradient(to bottom, #7f8c8d, #636e72);
+}
+
+/* Hover effet moderne */
+.button:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 6, 0, 0, 3);
+}
+
+/* === TableView moderne === */
+.table-view {
+    -fx-background-color: #0C1869;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* Header sombre + texte blanc */
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #34495e, #2c3e50);
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header,
+.table-view .column-header .label {
+    -fx-background-color: #0C1869;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+/* Lignes alternées */
+.table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+/* Sélection moderne */
+.table-row-cell:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* === TextField et ComboBox === */
+.text-field, .combo-box {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #bdc3c7;
+    -fx-padding: 5;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(41,128,185,0.3), 4, 0, 0, 2);
+}

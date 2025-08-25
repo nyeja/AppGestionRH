@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.PostController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="976.0" stylesheets="@../../css/dpmPstEmpl.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rh.controller.PostController">
     <children>
         <VBox prefHeight="610.0" prefWidth="976.0">
             <children>
@@ -30,34 +30,34 @@
                             </columns>
                         </TableView>
                         <TextField fx:id="txtRecherche" layoutX="477.0" layoutY="20.0" prefHeight="36.0" prefWidth="415.0" promptText="Rechercher un poste..." />
-                        <Text layoutX="33.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom :">
+                        <Text layoutX="33.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom :">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font></Text>
-                        <Text layoutX="30.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Localisation :">
+                        <Text layoutX="30.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Localisation :">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font></Text>
-                        <TextField fx:id="txtNom" layoutX="141.0" layoutY="223.0" prefHeight="36.0" prefWidth="190.0" promptText="nom ..." />
-                        <TextField fx:id="txtLocalisation" layoutX="141.0" layoutY="279.0" prefHeight="36.0" prefWidth="190.0" promptText="lieu .." />
-                        <Button fx:id="btnAjouter" alignment="CENTER" layoutX="45.0" layoutY="408.0" mnemonicParsing="false" onAction="#ajouterPoste" prefHeight="36.0" prefWidth="118.0" style="-fx-background-color: green;" text="AJOUTER" textFill="WHITE">
+                        <TextField fx:id="txtNom" layoutX="141.0" layoutY="258.0" prefHeight="25.0" prefWidth="190.0" promptText="nom ..." />
+                        <TextField fx:id="txtLocalisation" layoutX="141.0" layoutY="308.0" prefHeight="25.0" prefWidth="190.0" promptText="lieu .." />
+                        <Button fx:id="btnAjouter" alignment="CENTER" layoutX="45.0" layoutY="438.0" mnemonicParsing="false" onAction="#ajouterPoste" prefHeight="20.0" prefWidth="118.0" style="-fx-background-color: green;" text="AJOUTER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Button>
-                        <Button fx:id="btnModifier" alignment="CENTER" layoutX="194.0" layoutY="408.0" mnemonicParsing="false" onAction="#preparerModification" prefHeight="36.0" prefWidth="118.0" style="-fx-background-color: blue;" text="MODIFIER" textFill="WHITE">
+                        <Button fx:id="btnModifier" alignment="CENTER" layoutX="194.0" layoutY="438.0" mnemonicParsing="false" onAction="#preparerModification" prefHeight="20.0" prefWidth="118.0" style="-fx-background-color: blue;" text="MODIFIER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Button>
-                        <Button fx:id="btnSupprimer" alignment="CENTER" layoutX="194.0" layoutY="483.0" mnemonicParsing="false" onAction="#supprimerPoste" prefHeight="36.0" prefWidth="118.0" style="-fx-background-color: red;" text="SUPPRIMER" textFill="WHITE">
+                        <Button fx:id="btnSupprimer" alignment="CENTER" layoutX="194.0" layoutY="493.0" mnemonicParsing="false" onAction="#supprimerPoste" prefHeight="20.0" prefWidth="118.0" style="-fx-background-color: red;" text="SUPPRIMER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Button>
-                        <Text layoutX="29.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departement :">
+                        <Text layoutX="29.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departement :">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font></Text>
-                        <ChoiceBox fx:id="choiceDepartement" layoutX="143.0" layoutY="336.0" prefHeight="36.0" prefWidth="190.0" />
-                        <Button fx:id="btnValider" alignment="CENTER" disable="true" layoutX="45.0" layoutY="483.0" mnemonicParsing="false" onAction="#validerModification" prefHeight="36.0" prefWidth="118.0" style="-fx-background-color: green;" text="VALIDER" textFill="WHITE">
+                        <ChoiceBox fx:id="choiceDepartement" layoutX="143.0" layoutY="355.0" prefHeight="20.0" prefWidth="190.0" />
+                        <Button fx:id="btnValider" alignment="CENTER" disable="true" layoutX="45.0" layoutY="493.0" mnemonicParsing="false" onAction="#validerModification" prefHeight="20.0" prefWidth="118.0" style="-fx-background-color: green;" text="VALIDER" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Button>
@@ -70,12 +70,12 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Label layoutX="33.0" layoutY="26.0" prefHeight="36.0" prefWidth="377.0" text="Gestion des Postes">
+                  <Label fx:id="GestionTexte" layoutX="33.0" layoutY="26.0" prefHeight="36.0" prefWidth="377.0" text="Gestion des Postes">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnViderchamps" alignment="CENTER" disable="true" layoutX="43.0" layoutY="549.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="36.0" prefWidth="271.0" style="-fx-background-color: orange;" text="vider champs" textFill="WHITE">
+                  <Button fx:id="btnViderchamps" alignment="CENTER" disable="true" layoutX="43.0" layoutY="549.0" mnemonicParsing="false" onAction="#viderChamps" prefHeight="20.0" prefWidth="271.0" style="-fx-background-color: orange;" text="vider champs" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
